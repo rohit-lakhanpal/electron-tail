@@ -8,6 +8,7 @@ var watch = require('gulp-watch');
 var batch = require('gulp-batch');
 var plumber = require('gulp-plumber');
 var jetpack = require('fs-jetpack');
+var mainBowerFiles = require('main-bower-files');
 
 var bundle = require('./bundle');
 var generateSpecImportsFile = require('./generate_spec_imports');
@@ -37,19 +38,24 @@ gulp.task('clean', function () {
 
 var copyTask = function () {
     return projectDir.copyAsync('app', destDir.path(), {
-            overwrite: true,
-            matching: paths.copyFromAppDir
-        });
+        overwrite: true,
+        matching: paths.copyFromAppDir
+    });
 };
 gulp.task('copy', ['clean'], copyTask);
 gulp.task('copy-watch', copyTask);
 
+var copyBowerTask = function() {
+    return gulp.src(mainBowerFiles(/* options */), { base: './bower_components' })
+        .pipe(gulp.dest('./build/lib'))
+};
+gulp.task('copy-bower', ['copy'], copyBowerTask);
 
 var bundleApplication = function () {
     return Q.all([
-            bundle(srcDir.path('background.js'), destDir.path('background.js')),
-            bundle(srcDir.path('app.js'), destDir.path('app.js')),
-        ]);
+        bundle(srcDir.path('background.js'), destDir.path('background.js')),
+        bundle(srcDir.path('app.js'), destDir.path('app.js')),
+    ]);
 };
 
 var bundleSpecs = function () {
@@ -116,4 +122,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'copy', 'finalize']);
+gulp.task('build', ['bundle', 'less', 'copy-bower', 'finalize']);
