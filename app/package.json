@@ -1,18 +1,19 @@
 {
-  "name": "electron-boilerplate",
-  "productName": "Electron Boilerplate",
-  "description": "Starter for your Electron application. Out of the box ready for serious stuff.",
+  "name": "electron-tail",
+  "productName": "Electron Tail",
+  "description": "Application to tail files.",
   "version": "0.1.0",
-  "author": "Mr Gumby",
-  "copyright": "© 2016, your company here",
+  "author": "Rohit Lakhanpal",
+  "copyright": "© 2016, Rohit Lakhanpal",
   "main": "background.js",
   "dependencies": {
-    "fs-jetpack": "^0.9.0"
+    "fs-jetpack": "^0.9.0",
+    "file-tail": "^0.3.0"
   },
   "packageNameTemplate": "{{name}}-v{{version}}-{{platform}}-{{arch}}",
   "osx": {
     "build": "1",
-    "identifier": "com.example.electron-boilerplate",
+    "identifier": "com.example.electron-tail",
     "LSApplicationCategoryType": "public.app-category.productivity",
     "//codeSignIdentitiy": {
       "dmg": "Developer ID Application: Company Name (APPIDENTITY)",

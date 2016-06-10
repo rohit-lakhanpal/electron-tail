@@ -3,7 +3,7 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu } from 'electron';
+import { app, Menu, crashReporter } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
@@ -13,6 +13,14 @@ import createWindow from './helpers/window';
 import env from './env';
 
 var mainWindow;
+
+// Setup the crash reporter to a remote server
+crashReporter.start({
+  productName: 'Electron Tail',
+  companyName: 'Rohit Lakhanpal',
+  submitURL: 'http://ec2-52-64-55-12.ap-southeast-2.compute.amazonaws.com/submit',
+  autoSubmit: true
+});
 
 var setApplicationMenu = function () {
     var menus = [editMenuTemplate];
