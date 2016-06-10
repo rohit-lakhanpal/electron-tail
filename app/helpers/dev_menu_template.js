@@ -22,3 +22,4 @@ export var devMenuTemplate = {
         }
     }]
 };
+
