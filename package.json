@@ -21,8 +21,8 @@
     "appdmg": "^0.3.2",
     "rcedit": "^0.5.0"
   },
-  "scripts": {
-    "postinstall": "node_modules/.bin/bower install && cd app && npm install",
+  "scripts": { 
+    "postinstall": "node_modules/.bin/bower install && cd bower_components/ui-bootstrap && npm install && grunt build && cd ../../app && npm install",
     "build": "gulp build",
     "release": "gulp release --env=production",
     "start": "gulp start",

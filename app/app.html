@@ -3,12 +3,13 @@
 
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Electron Tail</title>
 
     <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
 
-    <script src="helpers/context_menu.js"></script>
-    <script src="helpers/external_links.js"></script>
 
     <script type="text/javascript" src="./lib/angular/angular.js"></script>
     <script src="app.js"></script>
@@ -19,10 +20,6 @@
     <div class="container" ng-controller="baseCtrl">
         <div class="">
             <div ng-if="fileName != ''">File: {{fileName}}</div>
-            <button ng-click="selectFile()">Select File</button>
-            <button ng-click="beginTailing()">Begin</button>
-            <button ng-click="pauseTailing()">Stop</button>
-            <button ng-click="clearOutput()">Clear</button>
         </div>
         <h1 id="greet">
             {{greetingMessage}}
@@ -42,7 +39,6 @@
             <a id="crash" href="javascript:process.crash()">Crash this process</a>
         </p>        
         <div class="output" ng-style="resizeWithOffset(10, 200)" resize>
-            <span ng-repeat="l in fileData" class="line">{{l}}</span> <br/>
         </div>        
     </div>
 </body>

@@ -3,13 +3,57 @@
 
 // Use new ES6 modules syntax for everything.
 import os from 'os'; // native node.js module
-import { remote } from 'electron'; // native electron module
+import process from 'process'; // native node.js module
+import util from 'util'; // native node.js module
+import { remote, crashReporter } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
 import { greet } from './hello_world/hello_world'; // code authored by you in this project
-import env from './env';
 import fs from 'fs'; // native node.js module
 import events from 'events'; // native node.js module
-console.log('Loaded environment variables:', env);
+
+// Special module holding environment variables which you declared
+// in config/env_xxx.json file.
+import env from './env';
+
+// TODO: Add crash reporting capability
+// Setup the crash reporter to a remote server
+// crashReporter.start({
+//     productName: 'Electron Tail Background',
+//     companyName: 'Rohit Lakhanpal',
+//     submitURL: '',    
+//     autoSubmit: true,
+//     extra: {        
+//         'startupDateTime': new Date().toString(),
+//         'user': process.env.USER,
+//         'logname': process.env.LOGNAME,
+//         'userHome': process.env.HOME,
+//         'memoryUsage': util.inspect(process.memoryUsage()),
+//         'pid': process.pid,
+//         'processTitle': process.title,
+//         'processVersion': process.version,
+//         'processUptime': process.uptime(),
+//         'osType': os.type(),
+//         'osRelease': os.release(),
+//         'osPlatform': os.platform(),
+//         'osUptime': os.uptime(),
+//         'osFreeMemory': os.freemem(),
+//         'osTotalMemory': os.totalmem(),
+//         'osHostname': os.hostname(),
+//         'localInterfaces': (function () {
+//             var interfaces = os.networkInterfaces();
+//             var addresses = [];
+//             for (var k in interfaces) {
+//                 for (var k2 in interfaces[k]) {
+//                     var address = interfaces[k][k2];
+//                     if (address.family === 'IPv4' && !address.internal) {
+//                         addresses.push(address.address);
+//                     }
+//                 }
+//             }
+//             return addresses.join(',');
+//         }())
+//     }
+// });
 
 var app = remote.app;
 var appDir = jetpack.cwd(app.getAppPath());
@@ -18,12 +62,12 @@ var appDir = jetpack.cwd(app.getAppPath());
 // here files like it is node.js! Welcome to Electron world :)
 console.log('The author of this app is:', appDir.read('package.json', 'json').author);
 
-(function (){
+(function () {
     var app = angular.module("panvivaApp", []);
     app.directive('resize', function ($window) {
         return function (scope, element, attr) {
             var w = angular.element($window);
-            scope.$watch(function () {                
+            scope.$watch(function () {
                 return {
                     'h': w[0].innerHeight,
                     'w': w[0].innerWidth
@@ -38,7 +82,7 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
 
                     return {
                         'height': (newValue.h - offsetH) + 'px',
-                        'width': (newValue.w - offsetW) + 'px' 
+                        'width': (newValue.w - offsetW) + 'px'
                     };
                 };
 
@@ -52,18 +96,21 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
             });
         }
     });
-    app.factory('electronSvc', ['$window', function(win) {
+    app.run(['$anchorScroll', function ($anchorScroll) {
+        $anchorScroll.yOffset = 100;   // always scroll by 50 extra pixels
+    }]);
+    app.factory('electronSvc', ['$window', function (win) {
         var msgs = [];
-        var customTail = function (){
-                var Tail, environment,
+        var customTail = function () {
+            var Tail, environment,
                 bind = function (fn, me) { return function () { return fn.apply(me, arguments); }; },
                 extend = function (child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
                 hasProp = {}.hasOwnProperty;
 
-                var tailFn = function (superClass) {
-                    extend(Tail, superClass);
+            var tailFn = function (superClass) {
+                extend(Tail, superClass);
 
-                    Tail.prototype.readBlock = function () {
+                Tail.prototype.readBlock = function () {
                     var block, stream;
                     if (this.queue.length >= 1) {
                         block = this.queue.shift();
@@ -214,8 +261,8 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
 
                 return Tail;
 
-            };            
-            
+            };
+
             return {
                 "Tail": tailFn(events.EventEmitter)
             }
@@ -227,14 +274,14 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
             "env": env,
             "dialog": remote.dialog,
             "fs": fs,
-            "events": events,            
+            "events": events,
             "alert": {
-                error: function (message){
+                error: function (message) {
                     alert(message);
                 }
             },
             "tail": customTail()
         }
-    }]); 
-}())
+    }]);
+} ())
 

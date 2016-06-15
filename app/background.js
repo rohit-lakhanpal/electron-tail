@@ -3,6 +3,9 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
+import os from 'os'; // native node.js module
+import process from 'process'; // native node.js module
+import util from 'util'; // native node.js module
 import { app, Menu, crashReporter } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
@@ -12,15 +15,46 @@ import createWindow from './helpers/window';
 // in config/env_xxx.json file.
 import env from './env';
 
-var mainWindow;
-
 // Setup the crash reporter to a remote server
-crashReporter.start({
-  productName: 'Electron Tail',
-  companyName: 'Rohit Lakhanpal',
-  submitURL: 'http://ec2-52-64-55-12.ap-southeast-2.compute.amazonaws.com/submit',
-  autoSubmit: true
-});
+// crashReporter.start({
+//     productName: 'Electron Tail Background',
+//     companyName: 'Rohit Lakhanpal',
+//     submitURL: '',    
+//     autoSubmit: true,
+//     extra: {        
+//         'startupDateTime': new Date().toString(),
+//         'user': process.env.USER,
+//         'logname': process.env.LOGNAME,
+//         'userHome': process.env.HOME,
+//         'memoryUsage': util.inspect(process.memoryUsage()),
+//         'pid': process.pid,
+//         'processTitle': process.title,
+//         'processVersion': process.version,
+//         'processUptime': process.uptime(),
+//         'osType': os.type(),
+//         'osRelease': os.release(),
+//         'osPlatform': os.platform(),
+//         'osUptime': os.uptime(),
+//         'osFreeMemory': os.freemem(),
+//         'osTotalMemory': os.totalmem(),
+//         'osHostname': os.hostname(),
+//         'localInterfaces': (function () {
+//             var interfaces = os.networkInterfaces();
+//             var addresses = [];
+//             for (var k in interfaces) {
+//                 for (var k2 in interfaces[k]) {
+//                     var address = interfaces[k][k2];
+//                     if (address.family === 'IPv4' && !address.internal) {
+//                         addresses.push(address.address);
+//                     }
+//                 }
+//             }
+//             return addresses.join(',');
+//         }())
+//     }
+// });
+
+var mainWindow;
 
 var setApplicationMenu = function () {
     var menus = [editMenuTemplate];

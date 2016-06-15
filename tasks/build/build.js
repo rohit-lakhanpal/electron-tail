@@ -75,12 +75,35 @@ gulp.task('bundle-watch', bundleTask);
 
 
 var lessTask = function () {
-    return gulp.src('app/stylesheets/main.less')
+    return gulp.src('app/stylesheets/*.less')
         .pipe(plumber())
         .pipe(less())
         .pipe(gulp.dest(destDir.path('stylesheets')));
 };
-gulp.task('less', ['clean'], lessTask);
+
+
+var copyBootstrapFonts = function () {
+    return projectDir.copyAsync('bower_components/bootstrap/dist/fonts', 'build/fonts', {
+        overwrite: true        
+    });    
+};
+
+var copyBootstrapCss = function () {
+    return projectDir.copyAsync('bower_components/bootstrap/dist/css', 'build/stylesheets', {
+        overwrite: true,
+        matching: '*.css'        
+    });    
+};
+
+var copyFontAwesomeCss = function () {
+    return projectDir.copyAsync('bower_components/font-awesome', 'build/font-awesome', {
+        overwrite: true       
+    });  
+};
+gulp.task('copyBootstrapFonts', ['clean'], copyBootstrapFonts);
+gulp.task('copyBootstrapCss', ['copyBootstrapFonts'], copyBootstrapCss);
+gulp.task('copyFontAwesomeCss', ['copyBootstrapCss'], copyFontAwesomeCss);
+gulp.task('less', ['copyFontAwesomeCss'], lessTask);
 gulp.task('less-watch', lessTask);
 
 
