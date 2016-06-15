@@ -8,8 +8,12 @@
 
     <title>Electron Tail</title>
 
-    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">    
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
 
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">    
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="./lib/angular/angular.js"></script>
     <script src="app.js"></script>
@@ -20,6 +24,18 @@
     <div class="container" ng-controller="baseCtrl">
         <div class="">
             <div ng-if="fileName != ''">File: {{fileName}}</div>
+            <button ng-click="selectFile()" type="button" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            </button>
+            <button ng-click="continueTailing()" type="button" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+            </button>
+            <button ng-click="pauseTailing()" type="button" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            </button>
+            <button ng-click="clearOutput()" type="button" class="btn btn-default btn-lg">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>                
+            </button>
         </div>
         <h1 id="greet">
             {{greetingMessage}}
@@ -39,6 +55,7 @@
             <a id="crash" href="javascript:process.crash()">Crash this process</a>
         </p>        
         <div class="output" ng-style="resizeWithOffset(10, 200)" resize>
+            <span id="anchor{{$index}}" ng-repeat="l in fileData" class="line">{{l}}</span> 
         </div>        
     </div>
 </body>
