@@ -63,7 +63,7 @@ var appDir = jetpack.cwd(app.getAppPath());
 console.log('The author of this app is:', appDir.read('package.json', 'json').author);
 
 (function () {
-    var app = angular.module("panvivaApp", []);
+    var app = angular.module("panvivaApp", ['ui.bootstrap']);
     app.directive('resize', function ($window) {
         return function (scope, element, attr) {
             var w = angular.element($window);

@@ -8,7 +8,7 @@ var watch = require('gulp-watch');
 var batch = require('gulp-batch');
 var plumber = require('gulp-plumber');
 var jetpack = require('fs-jetpack');
-var mainBowerFiles = require('main-bower-files');
+var bower = require('gulp-bower');
 
 var bundle = require('./bundle');
 var generateSpecImportsFile = require('./generate_spec_imports');
@@ -19,12 +19,13 @@ var srcDir = projectDir.cwd('./app');
 var destDir = projectDir.cwd('./build');
 
 var paths = {
-    copyFromAppDir: [
-        './node_modules/**',
-        './helpers/**',
-        './**/*.html',
+    copyFromAppDir: [        
+        './bower_components/**',
+        './helpers/**',        
+        './images/*',
+        './*.html',
         './**/*.+(jpg|png|svg)'
-    ],
+    ]
 };
 
 // -------------------------------------
@@ -45,11 +46,10 @@ var copyTask = function () {
 gulp.task('copy', ['clean'], copyTask);
 gulp.task('copy-watch', copyTask);
 
-var copyBowerTask = function() {
-    return gulp.src(mainBowerFiles(/* options */), { base: './bower_components' })
-        .pipe(gulp.dest('./build/lib'))
+var generateLibs = function() {
+    return jetpack.move('build/bower_components','build/lib')
 };
-gulp.task('copy-bower', ['copy'], copyBowerTask);
+gulp.task('generate-lib', ['copy'], generateLibs);
 
 var bundleApplication = function () {
     return Q.all([
@@ -83,20 +83,20 @@ var lessTask = function () {
 
 
 var copyBootstrapFonts = function () {
-    return projectDir.copyAsync('bower_components/bootstrap/dist/fonts', 'build/fonts', {
+    return projectDir.copyAsync('app/bower_components/bootstrap/dist/fonts', 'build/fonts', {
         overwrite: true        
     });    
 };
 
 var copyBootstrapCss = function () {
-    return projectDir.copyAsync('bower_components/bootstrap/dist/css', 'build/stylesheets', {
+    return projectDir.copyAsync('app/bower_components/bootstrap/dist/css', 'build/stylesheets', {
         overwrite: true,
         matching: '*.css'        
     });    
 };
 
 var copyFontAwesomeCss = function () {
-    return projectDir.copyAsync('bower_components/font-awesome', 'build/font-awesome', {
+    return projectDir.copyAsync('app/bower_components/font-awesome', 'build/font-awesome', {
         overwrite: true       
     });  
 };
@@ -145,4 +145,4 @@ gulp.task('watch', function () {
 });
 
 
-gulp.task('build', ['bundle', 'less', 'copy-bower', 'finalize']);
+gulp.task('build', ['bundle', 'less', 'generate-lib', 'finalize']);
