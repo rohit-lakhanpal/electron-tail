@@ -1,0 +1,149 @@
+html,
+body {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, 'Sans Serif', Arial, 'Shell UI', 'Trebuchet MS', Verdana;
+    font-size: 1em;
+}
+
+.header {
+    background-color: #00897B;
+    height: 34px;
+}
+
+.header-text {
+    color: #fff;
+    padding-left: 15px;
+    line-height: 38px;
+    vertical-align: initial;
+    font-size: 1.2em;
+}
+
+.sub-header {
+    background-color: #80CBC4;
+    height: 29px;
+    box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, .3);
+    z-index: 10;
+    position: relative;
+    padding:4px 0 0 5px;
+}
+
+.footer {
+    background-color: #E0F2F1;
+    width: calc(100% - 3px); 
+    height: 33px;
+    font-size: 1em;
+    padding: 6px 0 0 3px;
+}
+
+.content {
+    background-color: #455A64;
+    height: calc(100% - 96px);
+    overflow: auto;
+    padding: 15px 0 0 0;
+    color: #fff;
+}
+
+.nav-icons {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    margin-left: -35px;
+    float: left;
+}
+
+.nav-icons li {
+    padding: 9px 7px 5px 7px;
+    cursor: pointer;
+    color: #fff;
+    line-height: 1.4em;
+}
+
+.nav-icons li:hover {
+    color: #80CBC4;
+}
+
+.action-icons {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    margin-left: -35px;
+    float: right;
+}
+
+.action-icons li {
+    padding: 10px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.action-icons li:hover {
+    background-color: #80CBC4;
+}
+
+.common-negative-background-colour:hover {
+    background-color: #E60000 !important;
+}
+
+.common-positive-background-colour {
+    background-color: #008000;
+}
+
+.sub-header .tabs {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    margin-left: -44px;
+    margin-top:-3px;
+}
+
+.sub-header .tabs li:first-child {
+    border-bottom: 3px solid #FFA726;
+}
+
+.sub-header .tabs li {
+    padding: 3px 10px 4px 12px;
+    cursor: pointer;
+    color: #004D40;
+    border-right: 1px solid #004D40;
+    font-size: 1em;
+}
+
+.sub-header .tabs li .icon {
+    margin-left: 16px;
+    color: #00897B;
+    font-size: .7em;
+    vertical-align: baseline;
+}
+
+.sub-header .tabs li .icon:hover {
+    color: #E60000;
+}
+
+.sub-header .tabs li:hover {
+    background-color: #B2DFDB;
+    color: #004D40;
+}
+
+.footer-file-info{
+    float:left;
+}
+.footer-file-actions {
+    float:right;
+	margin-top: -3px;
+}
+.footer-file-actions span{
+    padding:0 5px;
+}
+.footer-file-actions span:hover{
+    cursor: pointer;
+}
+.line {
+    display: block;
+}
+.line-number {
+    background-color: #E0F2F1;
+    color: #333;
+    width: 10px;
+}

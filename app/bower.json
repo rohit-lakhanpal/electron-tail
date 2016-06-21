@@ -20,6 +20,9 @@
     "bootstrap": "^3.3.6",
     "jquery": "^2.2.4",
     "angular-bootstrap": "latest",
-    "font-awesome": "latest"    
+    "font-awesome": "latest"
+  },
+  "devDependencies": {
+    "angular-toastr": "^1.7.0"
   }
 }

@@ -8,56 +8,68 @@
 
     <title>Electron Tail</title>
 
-    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">    
-    <link href="stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="./stylesheets/main.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/supportpoint.icons.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="./lib/angular-toastr/dist/angular-toastr.min.css" rel="stylesheet" type="text/css" />
+    
 
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">    
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
     <script type="text/javascript" src="./lib/angular/angular.min.js"></script>
     <script type="text/javascript" src="./lib/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="./lib/angular-toastr/dist/angular-toastr.tpls.min.js"></script>
     <script src="app.js"></script>
     <script src="./helpers/baseCtrl.js"></script>    
 </head>
 
-<body>
-    <div class="container" ng-controller="baseCtrl">
-        <div class="">
-            <div ng-if="fileName != ''">File: {{fileName}}</div>
-            <button ng-click="selectFile()" type="button" class="btn btn-default btn-lg">
+<body ng-controller="baseCtrl">
+    <nav class="header">
+        <ul class="nav-icons">
+            <!-- Menu Clicks - TODO: Add evt handler -->
+            <li class="icon icon-menu"></li>
+            <li  ng-click="selectFile()">
                 <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-            </button>
-            <button ng-click="continueTailing()" type="button" class="btn btn-default btn-lg">
-                <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
-            </button>
-            <button ng-click="pauseTailing()" type="button" class="btn btn-default btn-lg">
-                <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            </button>
-            <button ng-click="clearOutput()" type="button" class="btn btn-default btn-lg">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>                
-            </button>
+            </li>
+            <!-- GitHub Repo TODO: Add evt handler & change icon -->
+            <li class="icon icon-user"></li>
+            
+        </ul>
+        <span class="header-text">
+            <span ng-if="file.fileName != ''">{{file.fileName}}</span>
+            <span ng-if="file.fileName == ''">Please select a file ..</span>
+        </span>
+        <ul class="action-icons">
+            <li class="icon icon-menu" title="Minimise"></li> 
+            <li class="icon icon-expand" title="Maximise"></li>
+            <li class="icon icon-close-thin common-negative-background-colour" title="Close"></li>
+        </ul>
+    </nav>
+    <nav class="sub-header" ng-if="openFiles && openFiles.length > 0">
+        <ul class="tabs">
+            <li ng-repeat="of in openFiles">{{of}}<span class="icon icon-close2" ng-click="closeFile($index)"></span></li>            
+        </ul>
+    </nav>
+    <nav class="sub-header" ng-if="openFiles == null || openFiles.length == 0">
+        Please select a file ..
+    </nav>
+    <section class="content">
+        <span id="anchor{{$index}}" ng-repeat="l in file.fileData track by $index" class="line">
+            <span class="line-number">{{($index + 1)}}</span> <span class="line-content">{{l}}</span>
+        </span>   
+    </section>    
+    <footer class="footer">
+        <div class="footer-file-info" ng-show="file.fileName != ''">
+            <span>{{file.fileName}}</span> |
+            <span>{{file.fileData.length}} line(s)</span> |
+            <span>{{file.fileSizeInKb}} KB</span>
         </div>
-        <h1 id="greet">
-            {{greetingMessage}}
-        </h1>
-        <p class="subtitle">
-            Welcome to <a href="http://electron.atom.io" class="js-external-link">Electron</a> app running on this magnificent
-            <strong id="platform-info">
-                {{platformInfo}}
-            </strong> machine.
-        </p>
-        <p class="subtitle">
-            You are in 
-            <strong id="env-name">
-                {{envName}}
-            </strong> environment.
-            Click the text below to crash and then reload this process.
-            <a id="crash" href="javascript:process.crash()">Crash this process</a>
-        </p>        
-        <div class="output" ng-style="resizeWithOffset(10, 200)" resize>
-            <span id="anchor{{$index}}" ng-repeat="l in fileData" class="line">{{l}}</span> 
-        </div>        
-    </div>
+        <div class="footer-file-actions">
+            <span ng-click="selectFile()" class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <span ng-click="clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span ng-click="pauseTailing()"  class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            <span ng-click="continueTailing()" class="glyphicon glyphicon-play" aria-hidden="true"></span>                        
+        </div>
+    </footer>    
 </body>
 </html>
