@@ -10,6 +10,11 @@ body {
 .header {
     background-color: #00897B;
     height: 34px;
+    -webkit-app-region: drag;
+}
+
+.header > ul {
+    -webkit-app-region: no-drag;
 }
 
 .header-text {
@@ -17,7 +22,7 @@ body {
     padding-left: 15px;
     line-height: 38px;
     vertical-align: initial;
-    font-size: 1.2em;
+    font-size: 1.2em;    
 }
 
 .sub-header {

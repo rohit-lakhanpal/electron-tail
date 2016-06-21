@@ -6,7 +6,7 @@
 import os from 'os'; // native node.js module
 import process from 'process'; // native node.js module
 import util from 'util'; // native node.js module
-import { app, Menu, crashReporter } from 'electron';
+import { app, Menu, crashReporter, ipcMain } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
@@ -15,6 +15,7 @@ import createWindow from './helpers/window';
 // in config/env_xxx.json file.
 import env from './env';
 
+// TODO: Add crash reporting capability
 // Setup the crash reporter to a remote server
 // crashReporter.start({
 //     productName: 'Electron Tail Background',
@@ -64,12 +65,29 @@ var setApplicationMenu = function () {
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
+ipcMain.on('synchronous-message', (event, arg) => {
+    if (arg) {
+        switch (arg) {
+            case "close":
+                app.quit();
+                break;
+            case "minimise":
+                app.hide();
+                break;
+            case "maximise":
+                app.show();
+                break;
+        }
+    }
+});
+
 app.on('ready', function () {
     setApplicationMenu();
 
     var mainWindow = createWindow('main', {
         width: 1000,
-        height: 600
+        height: 600,
+        frame: false
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');

@@ -40,9 +40,9 @@
             <span ng-if="file.fileName == ''">Please select a file ..</span>
         </span>
         <ul class="action-icons">
-            <li class="icon icon-menu" title="Minimise"></li> 
-            <li class="icon icon-expand" title="Maximise"></li>
-            <li class="icon icon-close-thin common-negative-background-colour" title="Close"></li>
+            <li class="icon icon-menu" title="Minimise" ng-click="windowMinimise()"></li> 
+            <li class="icon icon-expand" title="Maximise" ng-click="windowMaximise()"></li>
+            <li class="icon icon-close-thin common-negative-background-colour" title="Close" ng-click="windowClose()"></li>
         </ul>
     </nav>
     <nav class="sub-header" ng-if="openFiles && openFiles.length > 0">

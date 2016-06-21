@@ -6,7 +6,7 @@ import os from 'os'; // native node.js module
 import process from 'process'; // native node.js module
 import util from 'util'; // native node.js module
 import stream from 'stream'; // native node.js module
-import { remote, crashReporter } from 'electron'; // native electron module
+import { remote, crashReporter, ipcRenderer } from 'electron'; // native electron module
 import jetpack from 'fs-jetpack'; // module loaded from npm
 import { greet } from './hello_world/hello_world'; // code authored by you in this project
 import fs from 'fs'; // native node.js module
@@ -57,12 +57,12 @@ import env from './env';
 //     }
 // });
 
-var app = remote.app;
-var appDir = jetpack.cwd(app.getAppPath());
+var _elapp = remote.app;
+var _elappDir = jetpack.cwd(_elapp.getAppPath());
 
 // Holy crap! This is browser window with HTML and stuff, but I can read
 // here files like it is node.js! Welcome to Electron world :)
-console.log('The author of this app is:', appDir.read('package.json', 'json').author);
+console.log('The author of this app is:', _elappDir.read('package.json', 'json').author);
 
 (function () {
     var app = angular.module("panvivaApp", ['ui.bootstrap', 'toastr']);
@@ -102,15 +102,8 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
         $anchorScroll.yOffset = 100;   // always scroll by 50 extra pixels
     }]);
     app.factory('electronSvc', ['$window', 'toastr', function (win, toastr) {
-        return {
-            "os": os,
-            "remote": remote,
-            "greet": greet,
-            "env": env,
-            "dialog": remote.dialog,
-            "fs": fs,
-            "events": events,
-            "alert": {
+        var alerts = function () {
+            return {
                 success: function (message) {
                     toastr.success(message);
                 },
@@ -123,21 +116,62 @@ console.log('The author of this app is:', appDir.read('package.json', 'json').au
                 warning: function (message) {
                     toastr.warning(message);
                 }
-            },
+            };
+        }();
+
+        var fileHelpers = function () {
+            var getFilesizeInBytes = function (filename) {
+                console.log("filename: " + filename);
+                var stats = fs.statSync(filename);
+                console.log("stats: " + stats);
+                var fileSizeInBytes = stats["size"];
+                console.log("fileSizeInBytes: " + fileSizeInBytes);
+                return fileSizeInBytes;
+            };
+            return {
+                "getFilesizeInBytes": getFilesizeInBytes
+            }
+        }();
+
+        var windowFunctions = function () {
+            debugger;
+            var close = function () {
+                ipcRenderer.sendSync('synchronous-message', 'close');
+                // TODO: Add logic here to save system state??
+                _elapp.quit();
+            };
+            var minimise = function () {
+                ipcRenderer.sendSync('synchronous-message', 'minimise');
+                // TODO: Add logic here to save system state??
+                // _elapp.hide();
+                alerts.info("Not implemented!");
+            };
+            var maximise = function () {
+                ipcRenderer.sendSync('synchronous-message', 'maximise');
+                // TODO: Add logic here to save system state??
+                // _elapp.show();
+                _elapp.focus();
+                alerts.info("Not implemented!");
+            };
+            return {
+                "close": close,
+                "minimise": minimise,
+                "maximise": maximise
+            };
+        }();
+
+        return {
+            "os": os,
+            "remote": remote,
+            "greet": greet,
+            "env": env,
+            "dialog": remote.dialog,
+            "fs": fs,
+            "events": events,
+            "alert": alerts,
             "tail": tail,
-            "fileHelpers": function () {
-                var getFilesizeInBytes = function (filename) {
-                    console.log("filename: " + filename);
-                    var stats = fs.statSync(filename);
-                    console.log("stats: " + stats);
-                    var fileSizeInBytes = stats["size"];
-                    console.log("fileSizeInBytes: " + fileSizeInBytes);
-                    return fileSizeInBytes;
-                };
-                return {
-                    "getFilesizeInBytes": getFilesizeInBytes
-                }
-            }()
+            "fileHelpers": fileHelpers,
+            "windowFunctions": windowFunctions
         }
     }]);
 } ())

@@ -2,10 +2,20 @@
     var app = angular.module("panvivaApp");
     app.controller("baseCtrl", ['$scope', '$anchorScroll', '$location', '$interval', 'electronSvc', function ($scope, $anchorScroll, $location, $interval, electronSvc) {
         var that = $scope;
-
         that.platformInfo = electronSvc.os.platform();
         that.envName = electronSvc.env.name;
         that.openFiles = [];
+
+        // Setup window functions
+        that.windowMinimise = function (){
+            electronSvc.windowFunctions.minimise();
+        };
+        that.windowMaximise = function (){
+            electronSvc.windowFunctions.maximise();
+        };
+        that.windowClose = function (){
+            electronSvc.windowFunctions.close();
+        };
 
         // Setup function to initialse dataset
         that.init = function () {            
