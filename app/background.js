@@ -6,14 +6,14 @@
 import os from 'os'; // native node.js module
 import process from 'process'; // native node.js module
 import util from 'util'; // native node.js module
-import { app, Menu, crashReporter, ipcMain } from 'electron';
+import { app, Menu, BrowserWindow, crashReporter, ipcMain } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
-import env from './env';
+import environment from './env';
 
 // TODO: Add crash reporting capability
 // Setup the crash reporter to a remote server
@@ -59,27 +59,11 @@ var mainWindow;
 
 var setApplicationMenu = function () {
     var menus = [editMenuTemplate];
-    if (env.name !== 'production') {
+    if (environment.name !== 'production') {
         menus.push(devMenuTemplate);
     }
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
-
-ipcMain.on('synchronous-message', (event, arg) => {
-    if (arg) {
-        switch (arg) {
-            case "close":
-                app.quit();
-                break;
-            case "minimise":
-                app.hide();
-                break;
-            case "maximise":
-                app.show();
-                break;
-        }
-    }
-});
 
 app.on('ready', function () {
     setApplicationMenu();
@@ -92,11 +76,29 @@ app.on('ready', function () {
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
 
-    if (env.name !== 'production') {
+    if (environment.name !== 'production') {
         mainWindow.openDevTools();
     }
 });
 
 app.on('window-all-closed', function () {
     app.quit();
+});
+
+ipcMain.on('synchronous-message', (event, arg) => {
+    if (arg) {
+        switch (arg) {
+            case "close":
+                app.quit();
+                break;
+            case "minimise":                
+                // Check if logging required
+                console.log("window minimised!");
+                break;
+            case "maximise":
+                // Check if logging required
+                console.log("window maximised!");
+                break;
+        }
+    }
 });

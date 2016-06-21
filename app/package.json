@@ -1,11 +1,21 @@
 {
   "name": "electron-tail",
-  "productName": "Electron Tail",
-  "description": "Application to tail files.",
+  "productName": "Electron-Tail",
+  "description": "Application to display the tail end of a text file.",
   "version": "0.1.0",
   "author": "Rohit Lakhanpal",
   "copyright": "© 2016, Rohit Lakhanpal",
+  "sponsor": {
+    "name": "Panviva Pty Ltd",
+    "handle": "@panviva",
+    "href":"https://twitter.com/Panviva"
+  },
+  "credits": "",
   "main": "background.js",
+  "env": {
+    "name": "development",
+    "description": "Add here any environment specific stuff you like."
+  },
   "dependencies": {
     "fs-jetpack": "^0.9.0",
     "file-tail": "^0.3.0",
@@ -24,5 +34,5 @@
   },
   "scripts": {
     "postinstall": "node_modules/.bin/bower install"
-  }
+  }  
 }

@@ -3,8 +3,19 @@
     app.controller("baseCtrl", ['$scope', '$anchorScroll', '$location', '$interval', 'electronSvc', function ($scope, $anchorScroll, $location, $interval, electronSvc) {
         var that = $scope;
         that.platformInfo = electronSvc.os.platform();
+        
+        that.product = {
+            name: electronSvc.package.productName,
+            version: electronSvc.package.version,
+            author: electronSvc.package.author            
+        };
         that.envName = electronSvc.env.name;
         that.openFiles = [];
+
+        that.openGithub = function (){
+            var xx = electronSvc.package;
+debugger;
+        };
 
         // Setup window functions
         that.windowMinimise = function (){

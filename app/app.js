@@ -17,6 +17,8 @@ import tail from './helpers/tail.js'; // custom tail.js module
 // in config/env_xxx.json file.
 import env from './env';
 
+const { BrowserWindow } = require('electron').remote; // load the browser window
+
 // TODO: Add crash reporting capability
 // Setup the crash reporter to a remote server
 // crashReporter.start({
@@ -59,10 +61,12 @@ import env from './env';
 
 var _elapp = remote.app;
 var _elappDir = jetpack.cwd(_elapp.getAppPath());
+var _elcurrWDir = jetpack.cwd(process.cwd());
 
 // Holy crap! This is browser window with HTML and stuff, but I can read
 // here files like it is node.js! Welcome to Electron world :)
-console.log('The author of this app is:', _elappDir.read('package.json', 'json').author);
+var pkg = _elcurrWDir.read('app/package.json', 'json');
+console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pkg.author);
 
 (function () {
     var app = angular.module("panvivaApp", ['ui.bootstrap', 'toastr']);
@@ -134,31 +138,31 @@ console.log('The author of this app is:', _elappDir.read('package.json', 'json')
         }();
 
         var windowFunctions = function () {
-            debugger;
-            var close = function () {
-                ipcRenderer.sendSync('synchronous-message', 'close');
+            var close = function () {                
+                ipcRenderer.send('synchronous-message', 'close');
                 // TODO: Add logic here to save system state??
-                _elapp.quit();
+                // _elapp.quit();
             };
-            var minimise = function () {
-                ipcRenderer.sendSync('synchronous-message', 'minimise');
-                // TODO: Add logic here to save system state??
-                // _elapp.hide();
-                alerts.info("Not implemented!");
+            var minimise = function () {                 
+                ipcRenderer.send('synchronous-message', 'minimise');               
+                var window = BrowserWindow.getFocusedWindow();
+                window.minimize();                
             };
-            var maximise = function () {
-                ipcRenderer.sendSync('synchronous-message', 'maximise');
-                // TODO: Add logic here to save system state??
-                // _elapp.show();
-                _elapp.focus();
-                alerts.info("Not implemented!");
+            var maximise = function () {     
+                ipcRenderer.send('synchronous-message', 'maximise');            
+                var w = BrowserWindow.getFocusedWindow();
+                if (w.isMaximized()) {
+                    w.unmaximize();
+                } else {
+                    w.maximize();
+                }
             };
             return {
                 "close": close,
                 "minimise": minimise,
                 "maximise": maximise
             };
-        }();
+        }();       
 
         return {
             "os": os,
@@ -171,7 +175,8 @@ console.log('The author of this app is:', _elappDir.read('package.json', 'json')
             "alert": alerts,
             "tail": tail,
             "fileHelpers": fileHelpers,
-            "windowFunctions": windowFunctions
+            "windowFunctions": windowFunctions,
+            "package": pkg
         }
     }]);
 } ())

@@ -22,7 +22,7 @@ body {
     padding-left: 15px;
     line-height: 38px;
     vertical-align: initial;
-    font-size: 1.2em;    
+    font-size: 1.2em;
 }
 
 .sub-header {
@@ -48,6 +48,19 @@ body {
     overflow: auto;
     padding: 15px 0 0 0;
     color: #fff;
+}
+
+.content > .file-selector{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);  
+    transform: translate(-50%, -50%); 
+}
+
+.content > .file-selector > .glyphicon{
+    font-size: 4em;
 }
 
 .nav-icons {

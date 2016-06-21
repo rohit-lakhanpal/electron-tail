@@ -30,14 +30,16 @@
             <li class="icon icon-menu"></li>
             <li  ng-click="selectFile()">
                 <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-            </li>
-            <!-- GitHub Repo TODO: Add evt handler & change icon -->
-            <li class="icon icon-user"></li>
+            </li>            
+            <li class="fa fa-github" ng-click="openGithub()"></li>
+            
             
         </ul>
         <span class="header-text">
-            <span ng-if="file.fileName != ''">{{file.fileName}}</span>
-            <span ng-if="file.fileName == ''">Please select a file ..</span>
+            {{product.name}}
+            <span ng-if="file.fileName != ''">| 
+                {{file.fileName}}
+            </span>
         </span>
         <ul class="action-icons">
             <li class="icon icon-menu" title="Minimise" ng-click="windowMinimise()"></li> 
@@ -54,6 +56,11 @@
         Please select a file ..
     </nav>
     <section class="content">
+        <div class="file-selector" ng-click="selectFile()" ng-show="file.fileName == ''">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>           
+            <br />
+            Select a file ...
+        </div>
         <span id="anchor{{$index}}" ng-repeat="l in file.fileData track by $index" class="line">
             <span class="line-number">{{($index + 1)}}</span> <span class="line-content">{{l}}</span>
         </span>   
@@ -65,10 +72,14 @@
             <span>{{file.fileSizeInKb}} KB</span>
         </div>
         <div class="footer-file-actions">
-            <span ng-click="selectFile()" class="glyphicon glyphicon-file" aria-hidden="true"></span>
-            <span ng-click="clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            <span ng-click="pauseTailing()"  class="glyphicon glyphicon-pause" aria-hidden="true"></span>
-            <span ng-click="continueTailing()" class="glyphicon glyphicon-play" aria-hidden="true"></span>                        
+            <span ng-show="file.fileName == ''">
+                <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> by <a href="https://twitter.com/roeburg">{{product.author}}</a>
+            </span>
+            <span ng-show="file.fileName == ''">version {{product.version}}</span>
+            <span ng-show="file.fileName != ''" ng-click="selectFile()" class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <span ng-show="file.fileName != ''" ng-click="clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span ng-show="file.fileName != ''" ng-click="pauseTailing()"  class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            <span ng-show="file.fileName != ''" ng-click="continueTailing()" class="glyphicon glyphicon-play" aria-hidden="true"></span>                        
         </div>
     </footer>    
 </body>

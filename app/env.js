@@ -1,15 +1,8 @@
-// Simple module exposes environment variables to rest of the code.
+// Simple wrapper exposing environment variables to rest of the code.
 
 import jetpack from 'fs-jetpack';
 
-var app;
-if (process.type === 'renderer') {
-    app = require('electron').remote.app;
-} else {
-    app = require('electron').app;
-}
-var appDir = jetpack.cwd(app.getAppPath());
+// The variables have been written to `env.json` by the build process.
+var env = jetpack.cwd(__dirname).read('env.json', 'json');
 
-var manifest = appDir.read('package.json', 'json');
-
-export default manifest.env;
+export default env;
