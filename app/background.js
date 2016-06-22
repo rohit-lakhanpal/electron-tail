@@ -6,7 +6,7 @@
 import os from 'os'; // native node.js module
 import process from 'process'; // native node.js module
 import util from 'util'; // native node.js module
-import { app, Menu, BrowserWindow, crashReporter, ipcMain } from 'electron';
+import { app, Menu, BrowserWindow, crashReporter, ipcMain, shell } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
@@ -16,44 +16,47 @@ import createWindow from './helpers/window';
 import environment from './env';
 
 // TODO: Add crash reporting capability
-// Setup the crash reporter to a remote server
-// crashReporter.start({
-//     productName: 'Electron Tail Background',
-//     companyName: 'Rohit Lakhanpal',
-//     submitURL: '',    
-//     autoSubmit: true,
-//     extra: {        
-//         'startupDateTime': new Date().toString(),
-//         'user': process.env.USER,
-//         'logname': process.env.LOGNAME,
-//         'userHome': process.env.HOME,
-//         'memoryUsage': util.inspect(process.memoryUsage()),
-//         'pid': process.pid,
-//         'processTitle': process.title,
-//         'processVersion': process.version,
-//         'processUptime': process.uptime(),
-//         'osType': os.type(),
-//         'osRelease': os.release(),
-//         'osPlatform': os.platform(),
-//         'osUptime': os.uptime(),
-//         'osFreeMemory': os.freemem(),
-//         'osTotalMemory': os.totalmem(),
-//         'osHostname': os.hostname(),
-//         'localInterfaces': (function () {
-//             var interfaces = os.networkInterfaces();
-//             var addresses = [];
-//             for (var k in interfaces) {
-//                 for (var k2 in interfaces[k]) {
-//                     var address = interfaces[k][k2];
-//                     if (address.family === 'IPv4' && !address.internal) {
-//                         addresses.push(address.address);
-//                     }
-//                 }
-//             }
-//             return addresses.join(',');
-//         }())
-//     }
-// });
+if (environment && environment.crashReporterUrl) {
+    // Setup the crash reporter to a remote server
+    crashReporter.start({
+        productName: 'Electron Tail',
+        companyName: 'Rohit Lakhanpal',
+        submitURL: environment.crashReporterUrl,
+        autoSubmit: true,
+        extra: {
+            'processType': process.type,
+            'startupDateTime': new Date().toString(),
+            'user': process.env.USER,
+            'logname': process.env.LOGNAME,
+            'userHome': process.env.HOME,
+            'memoryUsage': util.inspect(process.memoryUsage()),
+            'pid': process.pid,
+            'processTitle': process.title,
+            'processVersion': process.version,
+            'processUptime': process.uptime(),
+            'osType': os.type(),
+            'osRelease': os.release(),
+            'osPlatform': os.platform(),
+            'osUptime': os.uptime(),
+            'osFreeMemory': os.freemem(),
+            'osTotalMemory': os.totalmem(),
+            'osHostname': os.hostname(),
+            'localInterfaces': (function () {
+                var interfaces = os.networkInterfaces();
+                var addresses = [];
+                for (var k in interfaces) {
+                    for (var k2 in interfaces[k]) {
+                        var address = interfaces[k][k2];
+                        if (address.family === 'IPv4' && !address.internal) {
+                            addresses.push(address.address);
+                        }
+                    }
+                }
+                return addresses.join(',');
+            } ())
+        }
+    });
+}
 
 var mainWindow;
 
@@ -71,7 +74,9 @@ app.on('ready', function () {
     var mainWindow = createWindow('main', {
         width: 1000,
         height: 600,
-        frame: false
+        frame: false,
+        minHeight: 500,
+        minWidth: 750
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
@@ -85,19 +90,22 @@ app.on('window-all-closed', function () {
     app.quit();
 });
 
-ipcMain.on('synchronous-message', (event, arg) => {
-    if (arg) {
-        switch (arg) {
+ipcMain.on('message', (event, arg) => {
+    if (arg && arg.command) {
+        switch (arg.command) {
             case "close":
                 app.quit();
                 break;
-            case "minimise":                
+            case "minimise":
                 // Check if logging required
                 console.log("window minimised!");
                 break;
             case "maximise":
                 // Check if logging required
                 console.log("window maximised!");
+                break;
+            case "openExternal":                
+                shell.openExternal(arg.param);
                 break;
         }
     }

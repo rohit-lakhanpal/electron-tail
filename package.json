@@ -23,6 +23,7 @@
   "scripts": { 
     "postinstall": "cd app && npm install",
     "build": "gulp build",
+    "build-prod": "gulp build --env=production",
     "release": "gulp release --env=production",
     "start": "gulp start",
     "pretest": "gulp build --env=test",

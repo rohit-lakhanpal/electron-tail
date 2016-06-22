@@ -3,13 +3,28 @@
   "productName": "Electron-Tail",
   "description": "Application to display the tail end of a text file.",
   "version": "0.1.0",
-  "author": "Rohit Lakhanpal",
+  "author": {
+    "name": "Rohit Lakhanpal",
+    "handle": "@roeburg",
+    "email": "mail@rohitl.com",
+    "url": "https://twitter.com/roeburg"
+  },
   "copyright": "© 2016, Rohit Lakhanpal",
   "sponsor": {
     "name": "Panviva Pty Ltd",
     "handle": "@panviva",
-    "href":"https://twitter.com/Panviva"
+    "url": "https://www.panviva.com"
   },
+  "keywords": [
+    "tail",
+    "electron",
+    "electron-tail"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rohit-lakhanpal/electron-tail.git"
+  },
+  "homepage": "https://github.com/rohit-lakhanpal/electron-tail",
   "credits": "",
   "main": "background.js",
   "env": {
@@ -33,6 +48,6 @@
     }
   },
   "scripts": {
-    "postinstall": "node_modules/.bin/bower install"
-  }  
+    "postinstall": "node_modules/.bin/bower install && node ../tasks/rebuild_native_modules"
+  }
 }

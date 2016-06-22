@@ -9,7 +9,7 @@
     <title>Electron Tail</title>
 
     <link href="./stylesheets/main.css" rel="stylesheet" type="text/css" />
-    <link href="./stylesheets/supportpoint.icons.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/icons.css" rel="stylesheet" type="text/css" />
     <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="./lib/angular-toastr/dist/angular-toastr.min.css" rel="stylesheet" type="text/css" />
     
@@ -30,19 +30,17 @@
             <li class="icon icon-menu"></li>
             <li  ng-click="selectFile()">
                 <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
-            </li>            
-            <li class="fa fa-github" ng-click="openGithub()"></li>
-            
-            
+            </li>
+            <li class="fa fa-github" open-external="{{product.repository.url}}"></li>
         </ul>
         <span class="header-text">
             {{product.name}}
-            <span ng-if="file.fileName != ''">| 
-                {{file.fileName}}
+            <span ng-if="file.fileName != ''">
+                : {{file.fileName}}
             </span>
         </span>
         <ul class="action-icons">
-            <li class="icon icon-menu" title="Minimise" ng-click="windowMinimise()"></li> 
+            <li class="fa fa-minus" aria-hidden="true" title="Minimise" ng-click="windowMinimise()"></li> 
             <li class="icon icon-expand" title="Maximise" ng-click="windowMaximise()"></li>
             <li class="icon icon-close-thin common-negative-background-colour" title="Close" ng-click="windowClose()"></li>
         </ul>
@@ -61,21 +59,35 @@
             <br />
             Select a file ...
         </div>
-        <span id="anchor{{$index}}" ng-repeat="l in file.fileData track by $index" class="line">
-            <span class="line-number">{{($index + 1)}}</span> <span class="line-content">{{l}}</span>
-        </span>   
+        <table class="file-table">
+            <tbody>
+                <tr ng-repeat="l in file.fileData track by $index">
+                    <td class="file-line-number">{{($index + 1)}}.</td>
+                    <td class="file-line-content" id="anchor{{$index}}">{{l}}</td>
+                </tr>
+            </tbody>            
+        </table>        
     </section>    
     <footer class="footer">
         <div class="footer-file-info" ng-show="file.fileName != ''">
-            <span>{{file.fileName}}</span> |
-            <span>{{file.fileData.length}} line(s)</span> |
-            <span>{{file.fileSizeInKb}} KB</span>
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> <span>{{file.fileName}}</span> |
+            <span>{{file.fileData.length}} {{file.fileData.length == 1 ? "line":"lines"}} | {{file.fileSizeInKb}} KB</span>
         </div>
         <div class="footer-file-actions">
             <span ng-show="file.fileName == ''">
-                <i class="fa fa-code"></i> with <i class="fa fa-heart"></i> by <a href="https://twitter.com/roeburg">{{product.author}}</a>
+                <i class="fa fa-code"></i> 
+                with 
+                <i class="fa fa-heart"></i> 
+                by 
+                <a open-external="{{product.author.url}}" title="{{product.author.name}}">{{product.author.handle}}</a>,                
+                sponsored by
+                <a open-external="{{product.sponsor.url}}" title="{{product.sponsor.name}}">{{product.sponsor.handle}}</a>.
             </span>
-            <span ng-show="file.fileName == ''">version {{product.version}}</span>
+            |
+            <span ng-show="file.fileName == ''">
+                <i class="fa fa-code-fork" aria-hidden="true"></i>
+                <a open-external="{{product.repository.url}}">v. {{product.version}}</a>
+            </span>
             <span ng-show="file.fileName != ''" ng-click="selectFile()" class="glyphicon glyphicon-file" aria-hidden="true"></span>
             <span ng-show="file.fileName != ''" ng-click="clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
             <span ng-show="file.fileName != ''" ng-click="pauseTailing()"  class="glyphicon glyphicon-pause" aria-hidden="true"></span>

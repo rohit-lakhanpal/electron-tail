@@ -1,16 +1,16 @@
 @font-face {
-	font-family: 'supportpoint-icons';
-	src:url('../fonts/supportpoint-icons.eot?-6akldu');
-	src:url('../fonts/supportpoint-icons.eot?#iefix-6akldu') format('embedded-opentype'),
-		url('../fonts/supportpoint-icons.ttf?-6akldu') format('truetype'),
-		url('../fonts/supportpoint-icons.woff?-6akldu') format('woff'),
-		url('../fonts/supportpoint-icons.svg?-6akldu#supportpoint-icons') format('svg');
+	font-family: 'icons';
+	src:url('../fonts/icons.eot?-6akldu');
+	src:url('../fonts/icons.eot?#iefix-6akldu') format('embedded-opentype'),
+		url('../fonts/icons.ttf?-6akldu') format('truetype'),
+		url('../fonts/icons.woff?-6akldu') format('woff'),
+		url('../fonts/icons.svg?-6akldu#icons') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
 .icon {
-	font-family: 'supportpoint-icons';
+	font-family: 'icons';
 	speak: none;
 	font-style: normal;
 	font-weight: normal;

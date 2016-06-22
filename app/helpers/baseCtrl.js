@@ -7,15 +7,23 @@
         that.product = {
             name: electronSvc.package.productName,
             version: electronSvc.package.version,
-            author: electronSvc.package.author            
+            author: {
+                name: electronSvc.package.author.name,
+                url: electronSvc.package.author.url,
+                handle: electronSvc.package.author.handle
+            },
+            sponsor: {
+                name: electronSvc.package.sponsor.name,
+                url: electronSvc.package.sponsor.url,
+                handle: electronSvc.package.sponsor.handle                
+            },
+            repository: {
+                type: electronSvc.package.repository.type,
+                url: electronSvc.package.repository.url
+            },
         };
         that.envName = electronSvc.env.name;
         that.openFiles = [];
-
-        that.openGithub = function (){
-            var xx = electronSvc.package;
-debugger;
-        };
 
         // Setup window functions
         that.windowMinimise = function (){

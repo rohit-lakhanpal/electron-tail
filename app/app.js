@@ -20,44 +20,47 @@ import env from './env';
 const { BrowserWindow } = require('electron').remote; // load the browser window
 
 // TODO: Add crash reporting capability
-// Setup the crash reporter to a remote server
-// crashReporter.start({
-//     productName: 'Electron Tail Background',
-//     companyName: 'Rohit Lakhanpal',
-//     submitURL: '',    
-//     autoSubmit: true,
-//     extra: {        
-//         'startupDateTime': new Date().toString(),
-//         'user': process.env.USER,
-//         'logname': process.env.LOGNAME,
-//         'userHome': process.env.HOME,
-//         'memoryUsage': util.inspect(process.memoryUsage()),
-//         'pid': process.pid,
-//         'processTitle': process.title,
-//         'processVersion': process.version,
-//         'processUptime': process.uptime(),
-//         'osType': os.type(),
-//         'osRelease': os.release(),
-//         'osPlatform': os.platform(),
-//         'osUptime': os.uptime(),
-//         'osFreeMemory': os.freemem(),
-//         'osTotalMemory': os.totalmem(),
-//         'osHostname': os.hostname(),
-//         'localInterfaces': (function () {
-//             var interfaces = os.networkInterfaces();
-//             var addresses = [];
-//             for (var k in interfaces) {
-//                 for (var k2 in interfaces[k]) {
-//                     var address = interfaces[k][k2];
-//                     if (address.family === 'IPv4' && !address.internal) {
-//                         addresses.push(address.address);
-//                     }
-//                 }
-//             }
-//             return addresses.join(',');
-//         }())
-//     }
-// });
+if (env && env.crashReporterUrl) {
+    // Setup the crash reporter to a remote server
+    crashReporter.start({
+        productName: 'Electron Tail',
+        companyName: 'Rohit Lakhanpal',
+        submitURL: env.crashReporterUrl,
+        autoSubmit: true,
+        extra: {
+            'processType': process.type,
+            'startupDateTime': new Date().toString(),
+            'user': process.env.USER,
+            'logname': process.env.LOGNAME,
+            'userHome': process.env.HOME,
+            'memoryUsage': util.inspect(process.memoryUsage()),
+            'pid': process.pid,
+            'processTitle': process.title,
+            'processVersion': process.version,
+            'processUptime': process.uptime(),
+            'osType': os.type(),
+            'osRelease': os.release(),
+            'osPlatform': os.platform(),
+            'osUptime': os.uptime(),
+            'osFreeMemory': os.freemem(),
+            'osTotalMemory': os.totalmem(),
+            'osHostname': os.hostname(),
+            'localInterfaces': (function () {
+                var interfaces = os.networkInterfaces();
+                var addresses = [];
+                for (var k in interfaces) {
+                    for (var k2 in interfaces[k]) {
+                        var address = interfaces[k][k2];
+                        if (address.family === 'IPv4' && !address.internal) {
+                            addresses.push(address.address);
+                        }
+                    }
+                }
+                return addresses.join(',');
+            } ())
+        }
+    });
+}
 
 var _elapp = remote.app;
 var _elappDir = jetpack.cwd(_elapp.getAppPath());
@@ -70,38 +73,52 @@ console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pk
 
 (function () {
     var app = angular.module("panvivaApp", ['ui.bootstrap', 'toastr']);
-    app.directive('resize', function ($window) {
-        return function (scope, element, attr) {
-            var w = angular.element($window);
-            scope.$watch(function () {
-                return {
-                    'h': w[0].innerHeight,
-                    'w': w[0].innerWidth
-                };
-            }, function (newValue, oldValue) {
-                scope.windowHeight = newValue.h;
-                scope.windowWidth = newValue.w;
-
-                scope.resizeWithOffset = function (offsetW, offsetH) {
-
-                    scope.$eval(attr.notifier);
-
-                    return {
-                        'height': (newValue.h - offsetH) + 'px',
-                        'width': (newValue.w - offsetW) + 'px'
-                    };
-                };
-
-            }, true);
-
-            w.bind('resize', function () {
-                scope.$apply();
-            });
-            w.bind('change', function () {
-                scope.$apply();
-            });
+    app.directive('openExternal', ['electronSvc', function (electronSvc) {
+        return {
+            restrict: 'A', //E = element, A = attribute, C = class, M = comment         
+            scope: {
+                //@ reads the attribute value, = provides two-way binding, & works with functions
+                title: '@'
+            },
+            link: function ($scope, element, attrs) {
+                element.bind('click', function (el, at) {
+                    electronSvc.utils.openLinkInExternalWindow(attrs.openExternal);
+                });
+            } //DOM manipulation
         }
-    });
+    }]);
+    // app.directive('resize', function ($window) {
+    //     return function (scope, element, attr) {
+    //         var w = angular.element($window);
+    //         scope.$watch(function () {
+    //             return {
+    //                 'h': w[0].innerHeight,
+    //                 'w': w[0].innerWidth
+    //             };
+    //         }, function (newValue, oldValue) {
+    //             scope.windowHeight = newValue.h;
+    //             scope.windowWidth = newValue.w;
+
+    //             scope.resizeWithOffset = function (offsetW, offsetH) {
+
+    //                 scope.$eval(attr.notifier);
+
+    //                 return {
+    //                     'height': (newValue.h - offsetH) + 'px',
+    //                     'width': (newValue.w - offsetW) + 'px'
+    //                 };
+    //             };
+
+    //         }, true);
+
+    //         w.bind('resize', function () {
+    //             scope.$apply();
+    //         });
+    //         w.bind('change', function () {
+    //             scope.$apply();
+    //         });
+    //     }
+    // });
     app.run(['$anchorScroll', function ($anchorScroll) {
         $anchorScroll.yOffset = 100;   // always scroll by 50 extra pixels
     }]);
@@ -121,7 +138,7 @@ console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pk
                     toastr.warning(message);
                 }
             };
-        }();
+        } ();
 
         var fileHelpers = function () {
             var getFilesizeInBytes = function (filename) {
@@ -135,21 +152,27 @@ console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pk
             return {
                 "getFilesizeInBytes": getFilesizeInBytes
             }
-        }();
+        } ();
+
+        var appUtils = function () {
+            return {
+                openLinkInExternalWindow: function (url) {                    
+                    ipcRenderer.send('message', { command: 'openExternal', param: url });
+                }
+            };
+        } ();
 
         var windowFunctions = function () {
-            var close = function () {                
-                ipcRenderer.send('synchronous-message', 'close');
-                // TODO: Add logic here to save system state??
-                // _elapp.quit();
+            var close = function () {
+                ipcRenderer.send('message', { command: 'close' });                
             };
-            var minimise = function () {                 
-                ipcRenderer.send('synchronous-message', 'minimise');               
+            var minimise = function () {
+                ipcRenderer.send('message', { command: 'minimise' });
                 var window = BrowserWindow.getFocusedWindow();
-                window.minimize();                
+                window.minimize();
             };
-            var maximise = function () {     
-                ipcRenderer.send('synchronous-message', 'maximise');            
+            var maximise = function () {
+                ipcRenderer.send('message', { command: 'maximise' });
                 var w = BrowserWindow.getFocusedWindow();
                 if (w.isMaximized()) {
                     w.unmaximize();
@@ -162,13 +185,14 @@ console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pk
                 "minimise": minimise,
                 "maximise": maximise
             };
-        }();       
+        } ();
 
         return {
             "os": os,
             "remote": remote,
             "greet": greet,
             "env": env,
+            "utils": appUtils,
             "dialog": remote.dialog,
             "fs": fs,
             "events": events,
