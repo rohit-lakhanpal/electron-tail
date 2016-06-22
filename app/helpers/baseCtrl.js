@@ -8,9 +8,9 @@
             name: electronSvc.package.productName,
             version: electronSvc.package.version,
             author: {
-                name: electronSvc.package.author.name,
-                url: electronSvc.package.author.url,
-                handle: electronSvc.package.author.handle
+                name: electronSvc.package.authorDetails.name,
+                url: electronSvc.package.authorDetails.url,
+                handle: electronSvc.package.authorDetails.handle
             },
             sponsor: {
                 name: electronSvc.package.sponsor.name,

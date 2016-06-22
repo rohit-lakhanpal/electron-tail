@@ -16,8 +16,9 @@ import tail from './helpers/tail.js'; // custom tail.js module
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
-
 const { BrowserWindow } = require('electron').remote; // load the browser window
+const pkg = jetpack.cwd(__dirname).read('package.json', 'json');
+console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pkg.author);
 
 // TODO: Add crash reporting capability
 if (env && env.crashReporterUrl) {
@@ -62,15 +63,12 @@ if (env && env.crashReporterUrl) {
     });
 }
 
-var _elapp = remote.app;
-var _elappDir = jetpack.cwd(_elapp.getAppPath());
-var _elcurrWDir = jetpack.cwd(process.cwd());
+// var _elapp = remote.app;
+// var _elappDir = jetpack.cwd(_elapp.getAppPath());
+// var _elcurrWDir = jetpack.cwd(process.cwd());
 
 // Holy crap! This is browser window with HTML and stuff, but I can read
 // here files like it is node.js! Welcome to Electron world :)
-var pkg = _elcurrWDir.read('app/package.json', 'json');
-console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pkg.author);
-
 (function () {
     var app = angular.module("panvivaApp", ['ui.bootstrap', 'toastr']);
     app.directive('openExternal', ['electronSvc', function (electronSvc) {
@@ -86,39 +84,7 @@ console.log(pkg.name + " version " + pkg.version + " writtten with ♥ by " + pk
                 });
             } //DOM manipulation
         }
-    }]);
-    // app.directive('resize', function ($window) {
-    //     return function (scope, element, attr) {
-    //         var w = angular.element($window);
-    //         scope.$watch(function () {
-    //             return {
-    //                 'h': w[0].innerHeight,
-    //                 'w': w[0].innerWidth
-    //             };
-    //         }, function (newValue, oldValue) {
-    //             scope.windowHeight = newValue.h;
-    //             scope.windowWidth = newValue.w;
-
-    //             scope.resizeWithOffset = function (offsetW, offsetH) {
-
-    //                 scope.$eval(attr.notifier);
-
-    //                 return {
-    //                     'height': (newValue.h - offsetH) + 'px',
-    //                     'width': (newValue.w - offsetW) + 'px'
-    //                 };
-    //             };
-
-    //         }, true);
-
-    //         w.bind('resize', function () {
-    //             scope.$apply();
-    //         });
-    //         w.bind('change', function () {
-    //             scope.$apply();
-    //         });
-    //     }
-    // });
+    }]);    
     app.run(['$anchorScroll', function ($anchorScroll) {
         $anchorScroll.yOffset = 100;   // always scroll by 50 extra pixels
     }]);

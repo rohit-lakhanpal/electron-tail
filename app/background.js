@@ -74,7 +74,7 @@ app.on('ready', function () {
     var mainWindow = createWindow('main', {
         width: 1000,
         height: 600,
-        frame: false,
+        frame: environment.name != 'production',
         minHeight: 500,
         minWidth: 750
     });

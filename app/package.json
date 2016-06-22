@@ -3,7 +3,8 @@
   "productName": "Electron-Tail",
   "description": "Application to display the tail end of a text file.",
   "version": "0.1.0",
-  "author": {
+  "author": "Apps by @roeburg",
+  "authorDetails": {
     "name": "Rohit Lakhanpal",
     "handle": "@roeburg",
     "email": "mail@rohitl.com",
@@ -33,7 +34,9 @@
   },
   "dependencies": {
     "fs-jetpack": "^0.9.0",
-    "file-tail": "^0.3.0",
+    "file-tail": "^0.3.0"    
+  },
+  "devDependencies": {
     "bower": "^1.7.9"
   },
   "packageNameTemplate": "{{name}}-v{{version}}-{{platform}}-{{arch}}",
@@ -48,6 +51,6 @@
     }
   },
   "scripts": {
-    "postinstall": "node_modules/.bin/bower install && node ../tasks/rebuild_native_modules"
+    "postinstall": "./node_modules/.bin/bower install"
   }
 }
