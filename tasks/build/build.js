@@ -26,6 +26,10 @@ var paths = {
         './images/*',
         './*.html',
         './**/*.+(jpg|png|svg|eot|ttf|woff|woff2|css)'
+    ],
+    copyFromResourcesDir: [
+        //'./*.+(ico|jpg|png|svg|eot|ttf|woff|woff2|css)',
+        './**/*.+(ico|jpg|png|svg|eot|ttf|woff|woff2|css)'
     ]
 };
 
@@ -37,14 +41,24 @@ gulp.task('clean', function () {
     return destDir.dirAsync('.', { empty: true });
 });
 
-
 var copyTask = function () {
     return projectDir.copyAsync('app', destDir.path(), {
         overwrite: true,
         matching: paths.copyFromAppDir
     });
 };
+var copyIconsTask = function () {
+    return projectDir.copyAsync(
+        'resources', 
+        'build/images', 
+        {
+            overwrite: true,
+            matching: paths.copyFromResourcesDir        
+        }
+    );    
+};
 gulp.task('copy', ['clean'], copyTask);
+gulp.task('copy-icon', ['copy'], copyIconsTask);
 gulp.task('copy-watch', copyTask);
 
 var generateLibs = function() {
@@ -166,4 +180,4 @@ gulp.task('watch', function () {
 
 
 // gulp.task('build', ['bundle', 'less', 'generate-lib', 'finalize']);
-gulp.task('build', ['bundle', 'less', 'generate-lib', 'environment', 'package-json']);
+gulp.task('build', ['bundle', 'less', 'generate-lib', 'environment', 'package-json','copy-icon']);

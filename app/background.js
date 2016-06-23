@@ -76,7 +76,8 @@ app.on('ready', function () {
         height: 600,
         frame: environment.name != 'production',
         minHeight: 500,
-        minWidth: 750
+        minWidth: 750,
+        icon: __dirname + '/images/icon.png'
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
