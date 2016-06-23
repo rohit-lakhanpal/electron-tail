@@ -124,6 +124,12 @@ if (env && env.crashReporterUrl) {
             return {
                 openLinkInExternalWindow: function (url) {                    
                     ipcRenderer.send('message', { command: 'openExternal', param: url });
+                },
+                crash: function (){
+                    process.crash();
+                },
+                hang: function (){
+                    process.hang();
                 }
             };
         } ();

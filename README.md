@@ -1,20 +1,16 @@
 electron-tail
 ==============
-Comprehensive boilerplate application for [Electron runtime](http://electron.atom.io).  
-
-Scope of this project:
-
-- Provide basic structure of the application so you can much easier grasp what should go where.
-- Give you cross-platform development environment, which works the same way on OSX, Windows and Linux.
-- Generate ready for distribution installers of your app for all three operating systems.
-
-Not in the scope:
-
-- Imposing on you any framework (e.g. Angular, React). You can integrate the one which makes most sense for you.
+electron-tail is a cross platform application that is meant to display the tailend of a text file. 
+This application has been built using [electron](https://github.com/electron/electron), a framework that helps build cross platform desktop apps with JavaScript, HTML, and CSS.
+At application's architecture is based on [szwacz's](https://github.com/szwacz) [electron-boilerplate template version 2.3.4](https://github.com/szwacz/electron-boilerplate/releases/tag/2.3.4). 
+It additionally uses [lucagrulla's](https://github.com/lucagrulla) [node-tail](https://github.com/lucagrulla/node-tail).
 
 # Quick start
-The only development dependency of this project is [Node.js](https://nodejs.org). So just make sure you have it installed.
-Then type few commands known to every Node developer...
+The only development dependency of this project is [Node.js](https://nodejs.org). 
+So just make sure you have it installed.
+Additionally if you would like to be able to build installers locally, you will need to download [Nullsoft Scriptable Install System (NSIS version >=2.51)](http://nsis.sourceforge.net/Download).
+
+After installing the dependancies, type following commands to get started...
 ```
 git clone https://github.com/rohit-lakhanpal/electron-tail.git
 cd electron-tail
@@ -22,6 +18,7 @@ npm install
 npm start
 ```
 ... and boom! You have running desktop application on your screen.
+
 
 # Structure of the project
 
@@ -33,7 +30,7 @@ Sits on path: `electron-tail/package.json`. Here you declare dependencies for yo
 Also here you declare the version of Electron runtime you want to use:
 ```json
 "devDependencies": {
-  "electron-prebuilt": "^0.34.0"
+  "electron-prebuilt": "^1.2.4""
 }
 ```
 
@@ -185,7 +182,13 @@ npm run release -- --mas
 
 #### Installer
 
-The installer is built using [NSIS](http://nsis.sourceforge.net). You have to install NSIS version 3.0, and add its folder to PATH in Environment Variables, so it is reachable to scripts in this project. For example, `C:\Program Files (x86)\NSIS`.
+The installer is built using [NSIS](http://nsis.sourceforge.net). You have to install NSIS version >=2.51, and add its folder to PATH in Environment Variables, so it is reachable to scripts in this project. For example, `C:\Program Files (x86)\NSIS`.
+
+#### Create installer
+
+```
+npm run release
+```
 
 #### 32-bit build on 64-bit Windows
 
@@ -195,7 +198,7 @@ There are still a lot of 32-bit Windows installations in use. If you want to sup
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Jakub Szwacz
+Copyright (c) 2015-2016 [Rohit Lakhanpal](https://github.com/rohit-lakhanpal)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

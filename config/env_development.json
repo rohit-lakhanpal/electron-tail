@@ -1,5 +1,5 @@
 {
   "name": "development",
   "description": "Add here any environment specific stuff you like.",
-  "crashReporterUrl": "http://localhost:3000"
+  "crashReporterUrl": "http://52.65.12.82:3000"
 }
