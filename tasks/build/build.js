@@ -28,7 +28,6 @@ var paths = {
         './**/*.+(jpg|png|svg|eot|ttf|woff|woff2|css)'
     ],
     copyFromResourcesDir: [
-        //'./*.+(ico|jpg|png|svg|eot|ttf|woff|woff2|css)',
         './**/*.+(ico|jpg|png|svg|eot|ttf|woff|woff2|css)'
     ]
 };
