@@ -17,6 +17,7 @@ import environment from './env';
 
 // Set application user model id
 app.setAppUserModelId(environment.appUserModelId);
+autoUpdater.setFeedURL(environment.autoUpdateFeedUrl); // Set the auto update feed url
 
 // TODO: Add crash reporting capability
 if (environment && environment.crashReporterUrl) {
