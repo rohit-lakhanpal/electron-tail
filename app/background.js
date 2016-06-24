@@ -6,7 +6,7 @@
 import os from 'os'; // native node.js module
 import process from 'process'; // native node.js module
 import util from 'util'; // native node.js module
-import { app, Menu, BrowserWindow, crashReporter, ipcMain, shell } from 'electron';
+import { app, Menu, BrowserWindow, crashReporter, ipcMain, shell, autoUpdater } from 'electron';
 import { devMenuTemplate } from './helpers/dev_menu_template';
 import { editMenuTemplate } from './helpers/edit_menu_template';
 import createWindow from './helpers/window';
@@ -14,6 +14,9 @@ import createWindow from './helpers/window';
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import environment from './env';
+
+// Set application user model id
+app.setAppUserModelId(environment.appUserModelId);
 
 // TODO: Add crash reporting capability
 if (environment && environment.crashReporterUrl) {
