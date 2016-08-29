@@ -3,14 +3,23 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
+// import modules & dependancies
 import { app, Menu } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
+import crashReporter from './helpers/crashReporter';
+import logger from './helpers/logger'
+logger.info('Application started & base modules & dependancies loaded.');
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
+logger.info('Environment variables loaded. ', env);
+
+// Setup the crash reporter
+crashReporter.setup();
+
 
 var mainWindow;
 

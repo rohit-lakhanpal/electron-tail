@@ -1,4 +1,9 @@
 {
   "name": "test",
-  "description": "Add here any environment specific stuff you like."
+  "description": "Add here any environment specific stuff you like.",
+  "appHeight": 600,
+  "appWidth": 1000,
+  "appFrame": true,
+  "appMinHeight": 500,
+  "appMinWidth": 750
 }

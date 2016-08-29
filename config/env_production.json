@@ -1,5 +1,11 @@
 {
   "name": "production",
   "description": "Add here any environment specific stuff you like.",
-  "crashReporterUrl": "http://52.65.12.82:3000"
+  "crashReporterUrl": "http://52.65.12.82:3000",
+  "appHeight": 600,
+  "appWidth": 800,
+  "appFrame": false,
+  "appMinHeight": 500,
+  "appMinWidth": 750,
+  "logFile": "c:/electron-tail.log"
 }
