@@ -5,12 +5,12 @@
             "name": "Launch",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/build/background.js",
+            "program": "${workspaceRoot}/app/background.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
-            "preLaunchTask": "build",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/electron-prebuilt/dist/electron.exe",
+            "preLaunchTask": "bld",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/electron/dist/electron.exe",
             "runtimeArgs": [
                 "--nolazy"
             ],

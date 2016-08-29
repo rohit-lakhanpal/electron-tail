@@ -2,11 +2,13 @@
     "version": "0.1.0",
     "command": "npm",
     "isShellCommand": true,
-    "args": ["run", "build"],
+    "args": ["run"],
     "showOutput": "always",
+    "suppressTaskName": true,
     "tasks": [
         {
-            "taskName": "build",
+            "taskName": "bld",
+            "args": ["build"],
             "isBuildCommand": true
         }
     ]
