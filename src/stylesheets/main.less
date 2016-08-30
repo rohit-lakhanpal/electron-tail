@@ -8,14 +8,10 @@
 @color6: #00897b; // Appears 2 times
 @color7: #e60000; // Appears 2 times
 
-
-// Height variables (appears count calculates by raw css)
-@height4: 100%; // Appears 2 times
-
 html , body {
 	font-family: 'Segoe UI', Tahoma, 'Sans Serif', Arial, 'Shell UI', 'Trebuchet MS', Verdana;
 	font-size: 1em;
-	height: @height4;
+	height: 100%;
 	margin: 0;
 	padding: 0;
 }
@@ -77,12 +73,12 @@ html , body {
 	font-size: 1em;
 	height: 33px;
 	padding: 6px 0 0 3px;
-	width: calc(100% - 3px);
+	// width: calc(100% - 3px); - Moved to calc.css as problems during plumbing
 }
 .content {
 	background-color: @color0;
 	color: @color2;
-	height: calc(@height4 - 96px);
+	// height: calc(100% - 96px); - Moved to calc.css as problems during plumbing
 	overflow: auto;
 	padding: 0 0 0 0;
 }
@@ -101,7 +97,7 @@ html , body {
 	display: flex;
 	float: left;
 	list-style-type: none;
-	margin-left: -35px;
+	margin-left: -35px !important;
 	margin: 0;
 	li {
 		color: @color2;

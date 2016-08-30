@@ -1,0 +1,6 @@
+.footer{
+    width: calc(100% - 3px);
+}
+.content {
+    height: calc(100% - 96px);
+}

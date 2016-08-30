@@ -4,7 +4,7 @@
 // window from here.
 
 // import modules & dependancies
-import { app, Menu } from 'electron';
+import { app, Menu, ipcMain, shell } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
@@ -17,9 +17,14 @@ logger.info('Application started & base modules & dependancies loaded.');
 import env from './env';
 logger.info('Environment variables loaded. ', env);
 
+// import required npm modules
+import jetpack from 'fs-jetpack'; 
+const pkg = jetpack.cwd(__dirname).read('package.json', 'json');
+
 // Setup the crash reporter
 crashReporter.setup();
 
+logger.info(`Application startup completed for ${pkg.name} version ${pkg.version} writtten with ♥ by ${pkg.author}.`);
 
 var mainWindow;
 
@@ -43,8 +48,15 @@ app.on('ready', function () {
     setApplicationMenu();
 
     var mainWindow = createWindow('main', {
-        width: 1000,
-        height: 600
+        width: env.appWidth,
+        height: env.appHeight,
+        minWidth: env.appMinHeight,
+        minHeight: env.appMinHeight,
+        frame: env.frame,
+        webPreferences: { 
+            nodeIntegration: false,
+            preload: __dirname + '/helpers/preload.js'
+        }
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app.html');
@@ -56,4 +68,27 @@ app.on('ready', function () {
 
 app.on('window-all-closed', function () {
     app.quit();
+});
+
+ipcMain.on('message', (event, arg) => {
+    if (arg && arg.command) {
+        switch (arg.command) {
+            case "close":
+                logger.info("Application quit.");
+                app.quit();
+                break;
+            case "minimise":
+                // Check if logging required
+                logger.debug("Window minimised.");
+                break;
+            case "maximise":
+                // Check if logging required
+                logger.debug("Window maximised.");
+                break;
+            case "openExternal":  
+                logger.debug(`Attempted to open external url at ${arg.param}`)              
+                shell.openExternal(arg.param);
+                break;
+        }
+    }
 });

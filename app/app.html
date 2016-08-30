@@ -1,27 +1,93 @@
 <!doctype html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Electron Boilerplate</title>
+<html ng-app="panvivaApp">
+<head>    
+    <!-- Set Page Title -->
+    <title>Electron Tail</title>
+    
+    <!-- Load stylesheets -->
+    <link href="./stylesheets/main.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/icons.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/calc.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/angular-csp.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/ui-bootstrap-csp.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/angular-toastr.min.css" rel="stylesheet" type="text/css" />
+    <link href="./stylesheets/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-    <link href="stylesheets/main.css" rel="stylesheet" type="text/css">
+    <!-- Load libraries -->
+    <script type="text/javascript" src="./libs/angular.min.js"></script>
+    <script type="text/javascript" src="./libs/ui-bootstrap.min.js"></script>
+    <script type="text/javascript" src="./libs/angular-toastr.min.js"></script>
 
-    <script src="helpers/context_menu.js"></script>
-    <script src="helpers/external_links.js"></script>
-
-    <script src="app.js"></script>
+    <!-- Load site js -->
+    <script type="text/javascript" src="./renderer/site.js"></script>
 </head>
 <body>
-
-    <div class="container">
-        <h1 id="greet"></h1>
-        <p class="subtitle">
-            Welcome to <a href="http://electron.atom.io" class="js-external-link">Electron</a> app running on this magnificent <strong id="platform-info"></strong> machine.
-        </p>
-        <p class="subtitle">
-            You are in <strong id="env-name"></strong> environment.
-        </p>
-    </div>
-
+    <nav class="header" ng-controller="navCtrl">
+        <ul class="nav-icons">
+            <!-- Menu Clicks - TODO: Add evt handler -->
+            <li class="icon icon-menu"></li>
+            <li ng-click="selectFile()">
+                <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            </li>
+            <li class="fa fa-github" open-external="{{data.product.repository.url}}"></li>
+        </ul>
+        <span class="header-text">
+            {{data.product.name}}            
+        </span>
+        <ul class="action-icons">
+            <li class="fa fa-minus" aria-hidden="true" title="Minimise" ng-click="windowMinimise()"></li>
+            <li class="icon icon-expand" title="Maximise" ng-click="windowMaximise()"></li>
+            <li class="icon icon-close-thin common-negative-background-colour" title="Close" ng-click="windowClose()"></li>
+        </ul>
+    </nav>
+    <nav class="sub-header" ng-if="openFiles && openFiles.length > 0">
+        <ul class="tabs">
+            <li ng-repeat="of in openFiles">{{of}}<span class="icon icon-close2" ng-click="closeFile($index)"></span></li>
+        </ul>
+    </nav>
+    <nav class="sub-header" ng-if="openFiles == null || openFiles.length == 0">
+        Please select a file ..
+    </nav>
+    <section class="content">
+        <div class="file-selector" ng-click="selectFile()" ng-show="file.fileName == ''">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <br /> Select a file ...
+        </div>
+        <table class="file-table">
+            <tbody>
+                <tr ng-repeat="l in file.fileData track by $index">
+                    <td class="file-line-number">{{($index + 1)}}.</td>
+                    <td class="file-line-content" id="anchor{{$index}}">{{l}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+    <footer class="footer" ng-controller="footerCtrl">
+        <div class="footer-file-info" ng-show="data.file.fileName != ''">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> <span>{{file.fileName}}</span> |
+            <span>{{file.fileData.length}} {{file.fileData.length == 1 ? "line":"lines"}} | {{file.fileSizeInKb}} KB</span>
+        </div>
+        <div class="footer-file-actions">
+            <span ng-show="data.file.fileName == ''">
+                <i class="fa fa-code"></i> 
+                with 
+                <i class="fa fa-heart"></i> 
+                by 
+                <a open-external="{{data.product.author.url}}" title="{{data.product.author.name}}">{{data.product.author.handle}}</a>,                
+                sponsored by
+                <a open-external="{{data.product.sponsor.url}}" title="{{data.product.sponsor.name}}">{{data.product.sponsor.handle}}</a>.
+            </span> |
+            <span ng-show="data.file.fileName == ''">
+                <i class="fa fa-code-fork" aria-hidden="true"></i>
+                <a open-external="{{data.product.repository.url}}">v. {{data.product.version}}</a>
+            </span>
+            <span ng-show="data.file.fileName != ''" ng-click="selectFile()" class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <span ng-show="data.file.fileName != ''" ng-click="clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            <span ng-show="data.file.fileName != ''" ng-click="pauseTailing()" class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+            <span ng-show="data.file.fileName != ''" ng-click="continueTailing()" class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </div>
+    </footer>
 </body>
+
 </html>

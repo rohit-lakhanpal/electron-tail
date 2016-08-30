@@ -1,1 +1,8 @@
 /fonts
+/helpers/crashReporter.js
+/helpers/logger.js
+/helpers/window.js
+/helpers/preload.js
+/libs
+/renderer
+/stylesheets

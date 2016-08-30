@@ -23,20 +23,62 @@ gulp.task('cleanFonts', function () {
     return destDir.dirAsync('fonts', { empty: true });
 });
 
+gulp.task('cleanLibs', function () {
+    return destDir.dirAsync('libs', { empty: true });
+});
+
 // Define main tasks
 gulp.task('bundle', function () {
     return Promise.all([
         bundle(srcDir.path('background.js'), destDir.path('background.js')),
-        bundle(srcDir.path('app.js'), destDir.path('app.js')),
-    ]);
+        bundle(srcDir.path('app.js'), destDir.path('app.js')),        
+    ]) && projectDir.copyAsync(srcDir.path('helpers'), destDir.path('helpers'), {
+        overwrite: true,
+        matching: ['*.js']
+    }) && projectDir.copyAsync(srcDir.path('renderer'), destDir.path('renderer'), {
+        overwrite: true,
+        matching: ['*.js']
+    });
+});
+
+gulp.task('libs', ['cleanLibs'], function () {
+    var plumbAngular = function () {
+        return projectDir.copyAsync(bowerDir.path('angular'), destDir.path('libs'), {
+            overwrite: true,
+            matching: ['*.js']
+        });
+    };
+
+    var plumbAngularBootstrap = function () {
+        return projectDir.copyAsync(bowerDir.path('angular-bootstrap'), destDir.path('libs'), {
+            overwrite: true,
+            matching: ['*.js']
+        });
+    };
+
+    var plumbAngularToastr = function () {
+        return projectDir.copyAsync(bowerDir.path('angular-toastr/dist'), destDir.path('libs'), {
+            overwrite: true,
+            matching: ['*.js']
+        });
+    };
+
+    return plumbAngular() && plumbAngularBootstrap() && plumbAngularToastr();
 });
 
 gulp.task('less', ['cleanStyles', 'cleanFonts'], function () {
     var plumbApplicationStyles = function () {
-        return gulp.src(srcDir.path('stylesheets/main.less'))
+        return projectDir.copyAsync(srcDir.path('fonts'), destDir.path('fonts'), {
+            overwrite: true
+        }) 
+        && gulp.src(srcDir.path('stylesheets/*.less'))
             .pipe(plumber())
             .pipe(less())
-            .pipe(gulp.dest(destDir.path('stylesheets')));
+            .pipe(gulp.dest(destDir.path('stylesheets'))) 
+        && projectDir.copyAsync(srcDir.path('stylesheets'), destDir.path('stylesheets'), {
+            overwrite: true,
+            matching: ['*.css']
+        }) ;
     };
 
     var plumbBowerStyles = function () {
@@ -105,4 +147,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('build', ['bundle', 'less', 'environment']);
+gulp.task('build', ['bundle', 'less', 'libs', 'environment']);
