@@ -24,7 +24,7 @@
     "buildResources": "resources"
   },
   "scripts": {
-    "postinstall": "install-app-deps",
+    "postinstall": "bower install && install-app-deps",
     "build": "gulp build",
     "prerelease": "gulp build --env=production",
     "release": "build --x64 --publish never",
