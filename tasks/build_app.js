@@ -15,8 +15,14 @@ var destDir = jetpack.cwd('./app');
 
 gulp.task('bundle', function () {
     return Promise.all([
+        // Bundle the background.js script
         bundle(srcDir.path('background.js'), destDir.path('background.js')),
-        bundle(srcDir.path('app.js'), destDir.path('app.js')),
+        
+        // The following line is commented out as the app.js will have note integration switched off and will not require bundling
+        // bundle(srcDir.path('app.js'), destDir.path('app.js')),
+
+        // Preload is used in the renderer process & hence needs bundling 
+        bundle(srcDir.path('helpers/preload.js'), destDir.path('js/preload.js')),    
     ]);
 });
 
