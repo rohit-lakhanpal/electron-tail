@@ -22,4 +22,7 @@ var afterEach = function () {
 export default {
     beforeEach: beforeEach,
     afterEach: afterEach,
+    constants: {
+        testContentValues: "Test Content Value"
+    }
 };

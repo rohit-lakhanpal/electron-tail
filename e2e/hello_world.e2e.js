@@ -6,9 +6,11 @@ describe('application launch', function () {
     beforeEach(testUtils.beforeEach);
     afterEach(testUtils.afterEach);
 
-    it('shows hello world text on screen after launch', function () {
-        return this.app.client.getText('#greet').then(function (text) {
-            expect(text).to.equal('Hello World!');
+    it('contains the test content values hidden on screen after launch', function () {
+        return this.app.client.getText('#e2eTestContent').then(function (text) {
+            console.log("Got text ", text);
+            console.log("Assert text ", testUtils.constants.testContentValues);
+            expect(text).to.equal(testUtils.constants.testContentValues);
         });
     });
 });

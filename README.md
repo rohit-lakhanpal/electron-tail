@@ -4,7 +4,7 @@ This application, *electron-tail* is a cross platform application that is meant 
 
 This application has been built using [electron](https://github.com/electron/electron), a framework that helps build cross platform desktop apps with JavaScript, HTML, and CSS.
 
-This application's architecture is based on [szwacz's](https://github.com/szwacz) [electron-boilerplate template version 4.1.0](https://github.com/szwacz/electron-boilerplate/releases/tag/4.1.0). It additionally uses some code from [lucagrulla's](https://github.com/lucagrulla) [node-tail](https://github.com/lucagrulla/node-tail).
+This application's architecture is based on [szwacz's](https://github.com/szwacz) [electron-boilerplate template version 4.2.0](https://github.com/szwacz/electron-boilerplate/releases/tag/4.2.0). It additionally uses some code from [lucagrulla's](https://github.com/lucagrulla) [node-tail](https://github.com/lucagrulla/node-tail).
 
 # Quick start
 The only development dependency of this project is [Node.js](https://nodejs.org). 
