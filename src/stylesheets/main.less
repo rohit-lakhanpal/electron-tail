@@ -1,194 +1,25 @@
-// Color variables (appears count calculates by raw css)
-@color0: #455a64; // Appears 7 times
-@color1: #e0f2f1; // Appears 6 times
-@color2: #ffffff; // Appears 4 times
-@color3: #004d40; // Appears 3 times
-@color4: #80cbc4; // Appears 3 times
-@color5: #000066; // Appears 2 times
-@color6: #00897b; // Appears 2 times
-@color7: #e60000; // Appears 2 times
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
 
-html , body {
-	font-family: 'Segoe UI', Tahoma, 'Sans Serif', Arial, 'Shell UI', 'Trebuchet MS', Verdana;
-	font-size: 1em;
-	height: 100%;
-	margin: 0;
-	padding: 0;
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif;
 }
-.header {
-	-webkit-app-region: drag;
-	background-color: @color6;
-	height: 34px;
+
+a {
+    text-decoration: none;
 }
-.header>ul {
-	-webkit-app-region: no-drag;
+
+.container {
+    text-align: center;
 }
-.header-text {
-	color: @color2;
-	font-size: 1.2em;
-	line-height: 38px;
-	padding-left: 15px;
-	vertical-align: initial;
-}
-.sub-header {
-	background-color: @color4;
-	box-shadow: 0px 2px 6px 0 rgba(0, 0, 0, .3);
-	height: 29px;
-	padding:4px 0 0 5px;
-	position: relative;
-	z-index: 10;
-	.tabs {
-		display: flex;
-		list-style-type: none;
-		margin-left: -44px;
-		margin-top:-3px;
-		margin: 0;
-		li {
-			border-right: 1px solid @color3;
-			color: @color3;
-			cursor: pointer;
-			font-size: 1em;
-			padding: 3px 10px 4px 12px;
-			&:first-child {
-				border-bottom: 3px solid #FFA726;
-			}
-			.icon {
-				color: @color6;
-				font-size: .7em;
-				margin-left: 16px;
-				vertical-align: baseline;
-				&:hover {
-					color: @color7;
-				}
-			}
-			&:hover {
-				background-color: #B2DFDB;
-				color: @color3;
-			}
-		}
-	}
-}
-.footer {
-	background-color: @color1;
-	font-size: 1em;
-	height: 33px;
-	padding: 6px 0 0 3px;
-	// width: calc(100% - 3px); - Moved to calc.css as problems during plumbing
-}
-.content {
-	background-color: @color0;
-	color: @color2;
-	// height: calc(100% - 96px); - Moved to calc.css as problems during plumbing
-	overflow: auto;
-	padding: 0 0 0 0;
-}
-.content>.file-selector {
-	-webkit-transform: translate(-50%, -50%);
-	left: 50%;
-	position: absolute;
-	text-align: center;
-	top: 50%;
-	transform: translate(-50%, -50%);
-}
-.content>.file-selector>.glyphicon {
-	font-size: 4em;
-}
-.nav-icons {
-	display: flex;
-	float: left;
-	list-style-type: none;
-	margin-left: -35px !important;
-	margin: 0;
-	li {
-		color: @color2;
-		cursor: pointer;
-		line-height: 1.4em;
-		padding: 9px 7px 5px 7px;
-		&:hover {
-			color: @color4;
-		}
-	}
-}
-.action-icons {
-	display: flex;
-	float: right;
-	list-style-type: none;
-	margin-left: -35px;
-	margin: 0;
-	li {
-		color: @color2;
-		cursor: pointer;
-		padding: 10px;
-		&:hover {
-			background-color: @color4;
-		}
-	}
-}
-.common-negative-background-colour {
-	&:hover {
-		background-color: @color7 !important;
-	}
-}
-.common-positive-background-colour {
-	background-color: #008000;
-}
-.footer-file-info {
-	float:left;
-}
-.footer-file-actions {
-	float:right;
-	margin-top: -3px;
-	span {
-		padding:0 5px;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-}
-.line-number {
-	background-color: @color1;
-	color: #333333;
-	width: 10px;
-}
-.file-table {
-	width: 100%;
-}
-.file-table>tbody>tr {
-	&:last-child>.file-line-number {
-		background-color: @color1;
-		border: 1px solid @color0;
-		color: @color0;
-	}
-	&:last-child>.file-line-content {
-		background-color: @color1;
-		border: 1px solid @color0;
-		color: @color0;
-	}
-}
-.file-line-number {
-	background-color: @color1;
-	border: 1px solid @color0;
-	color: @color0;
-	padding: 0 0 0 3px;
-	text-align: right;
-	width: 30px;
-}
-.file-line-content {
-	border: 1px solid @color1;
-	padding: 0 0 0 3px;
-}
-.fa-code {
-	color: @color5;
-	font-size: 1.3em;
-	font-weight: bold;
-}
-.fa-heart {
-	color: #ff0000;
-	font-size: 1.3em;
-	font-weight: bold;
-}
-.fa-code-fork {
-	color: @color5;
-	font-size: 1.3em;
-	font-weight: bold;
+
+.subtitle {
+    color: gray;
 }
