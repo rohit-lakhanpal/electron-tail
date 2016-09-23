@@ -9,3 +9,4 @@ exports.getEnvName = function () {
 exports.beepSound = function () {
     process.stdout.write('\u0007');
 };
+
