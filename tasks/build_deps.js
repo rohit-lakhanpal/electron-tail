@@ -80,7 +80,7 @@ gulp.task('css-angular-toastr', function () {
 });
 
 gulp.task('css-bootstrap', function () {    
-    return projectDir.copyAsync('bower_components/bootstrap/dist/css', 'app/stylesheets/bootstrap', {
+    return projectDir.copyAsync('bower_components/bootstrap/dist/css', 'app/stylesheets', {
         overwrite: true,
         matching: '*.min.css'       
     });    
@@ -102,13 +102,20 @@ gulp.task('fonts-font-awesome', function () {
     });    
 });
 
-gulp.task('fonts-font-awesome', function () {    
-    return projectDir.copyAsync('bower_components/font-awesome/fonts/', 'app/fonts', {
+gulp.task('fonts-bootstrap', function () {    
+    return projectDir.copyAsync('bower_components/bootstrap/dist/fonts', 'app/fonts', {
         overwrite: true,
         matching: '*'       
     });    
 });
 
-gulp.task('fonts', ['fonts-font-awesome']);
+gulp.task('fonts-custom', function () {    
+    return projectDir.copyAsync('src/fonts', 'app/fonts', {
+        overwrite: true,
+        matching: '*'       
+    });    
+});
 
-gulp.task('deps', ['clean', 'scripts', 'styles']);
+gulp.task('fonts', ['fonts-font-awesome', 'fonts-bootstrap', 'fonts-custom']);
+
+gulp.task('deps', ['clean', 'scripts', 'styles', 'fonts']);

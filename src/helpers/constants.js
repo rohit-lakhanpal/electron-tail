@@ -14,6 +14,7 @@ export default {
     },
     events: {
         file: {
+            open: 'events-file-open',
             listen: 'events-file-listen',
             startWatch: 'events-file-start-watch',
             pauseWatch: 'events-file-pause-watch',
