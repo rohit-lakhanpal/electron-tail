@@ -12,7 +12,13 @@ export default {
         production: 'production',
         test: 'test'
     },
-    events: {
+    events: {        
+        window: {
+            minimize: 'events-window-minimize',
+            restore: 'events-window-restore',
+            close: 'events-window-close',
+        },
+        passthrough: 'events-passthrough',
         file: {
             open: 'events-file-open',
             listen: 'events-file-listen',

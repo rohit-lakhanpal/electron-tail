@@ -3,16 +3,20 @@
 // It doesn't have any windows which you can see on screen, but we can open
 // window from here.
 
-import { app, Menu } from 'electron';
+import { app, Menu, ipcMain } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
+import constants from './helpers/constants';
+import events from './helpers/events';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
 import env from './env';
 
 var mainWindow;
+// workerWindows: is an array of objects. Each object has { id:(guid), associatedFile:(name & path of the file its tailing), win:(windowObject) } 
+var workerWindows = [];
 
 var setApplicationMenu = function () {
     var menus = [editMenuTemplate];
@@ -36,6 +40,7 @@ app.on('ready', function () {
     var mainWindow = createWindow('main', {
         width: 1000,
         height: 600,
+        frame: false,
         webPreferences: {
             nodeIntegration: false,
             preload: __dirname + '/js/preload.js'
@@ -46,9 +51,13 @@ app.on('ready', function () {
 
     if (env.name === 'development') {
         mainWindow.openDevTools();
-    }
+    }  
+
+    // Add event listeners
+    events.setup(mainWindow, workerWindows, constants, ipcMain);    
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function () {    
     app.quit();
 });
+
