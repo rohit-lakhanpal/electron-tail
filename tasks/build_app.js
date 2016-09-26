@@ -56,4 +56,4 @@ gulp.task('watch', function () {
     }));
 });
 
-gulp.task('build', ['bundle', 'less', 'environment', 'deps']);
+gulp.task('build', ['bundle', 'less', 'environment', 'deps', 'css-override']);

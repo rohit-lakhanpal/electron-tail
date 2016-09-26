@@ -26,6 +26,13 @@
 
 @color1: #00897B;
 @color2: #fff;
+@color3: #80CBC4;
+@color4: #E60000;
+@color5: #004D40;
+@color6: #FFA726;
+@color7: #E0F2F1;
+@body_background: #455A64;
+
 html,
 body {
     height: 100%;
@@ -33,23 +40,24 @@ body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, 'Sans Serif', Arial, 'Shell UI', 'Trebuchet MS', Verdana;
     font-size: 1em;
+    background-color: @body_background !important;
+    color: @color2 !important;
+    overflow: hidden;
 }
 .header {
+    -webkit-app-region: drag;
     background-color: @color1;
     color: @color2;
     height: 34px;
-    width: 100%;
-    -webkit-app-region: drag;    
-
+    width: 100%;    
     .nav-icons {
         -webkit-app-region: no-drag;     
         margin-left: -40px!important;  
         width: 148px;        
-        float: left; 
+        float: left;
     }
 
-    .header-text{
-        color: @color2;
+    .header-text{        
         padding-left: 15px;
         line-height: 38px;
         vertical-align: initial;
@@ -58,37 +66,89 @@ body {
     } 
 
     ul{
-        width: 142px;
+        -webkit-app-region: no-drag; 
+        width: 122px;
         float: right;
         li {
+            cursor: pointer;
             display:inline-block;
             list-style-type: none;             
-            padding:10px;
+            padding: 9px 7px 5px 7px;
+            line-height: 1.4em;            
+        }
+        li:hover {
+            background-color: @color3;
         }
     }       
 }
+
+.sub-header {
+    background-color: @color3;
+    height: 30px;
+    color: @body_background;
+    position: relative;
+    padding: 4px 0 0 5px;
+
+    .tabs {
+        list-style-type: none;
+        display: flex;
+        margin: 0;
+        margin-left: -44px;
+        margin-top:-3px;
+
+        li {
+            padding: 3px 10px 4px 12px;
+            cursor: pointer;
+            color: @color5;
+            border-right: 1px solid @color5;
+            font-size: 1em;
+        }
+
+        li:first-child {
+            border-bottom: 3px solid @color6;
+        }
+    }  
+}
+
+.content {   
+    
+    overflow: auto;
+    padding: 0 0 0 0;
+    color: @color2;
+
+    .file-selector {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        text-align: center;
+        -webkit-transform: translate(-50%, -50%);  
+        transform: translate(-50%, -50%); 
+        .glyphicon {
+            font-size: 4em;
+        }        
+    }
+}
+
+
+.footer {
+    background-color: @color7;    
+    height: 33px;
+    font-size: 1em;
+    padding: 6px 0 0 3px;
+}
+
 
 .action-icons {
     list-style-type: none;
     display: flex;
     margin: 0;    
     float: right;
-
+    cursor: pointer;
     li {
-        padding: 10px;
-        cursor: pointer;
-        color: #fff;
-
-        :hover {
-            background-color: #80CBC4;
-        }
+        padding: 10px;                
     }
-
 }
 .common-negative-background-colour:hover {
-    background-color: #E60000 !important;
+    background-color: @color4 !important;
 }
 
-.common-positive-background-colour {
-    background-color: #008000;
-}

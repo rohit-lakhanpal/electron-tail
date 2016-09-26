@@ -119,3 +119,10 @@ gulp.task('fonts-custom', function () {
 gulp.task('fonts', ['fonts-font-awesome', 'fonts-bootstrap', 'fonts-custom']);
 
 gulp.task('deps', ['clean', 'scripts', 'styles', 'fonts']);
+
+gulp.task('css-override', function (){
+    return projectDir.copyAsync('src/stylesheets', 'app/stylesheets', {
+        overwrite: true,
+        matching: '*.css'       
+    }); 
+})
