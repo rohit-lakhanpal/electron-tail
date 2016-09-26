@@ -1,0 +1,10 @@
+/*
+    This file contails all the calc overrides. This is to curcumvent gulp-less issues.
+*/
+.content {    
+    height: calc(100% - 96px);
+}
+
+.footer {    
+    width: calc(100% - 1px);
+} 
