@@ -15,8 +15,8 @@ import events from './helpers/events';
 import env from './env';
 
 var mainWindow;
-// workerWindows: is an array of objects. Each object has { id:(guid), associatedFile:(name & path of the file its tailing), win:(windowObject) } 
-var workerWindows = [];
+// // workerWindows: is an array of objects. Each object has { id:(guid), associatedFile:(name & path of the file its tailing), win:(windowObject) } 
+// var workerWindows = [];
 
 var setApplicationMenu = function () {
     var menus = [editMenuTemplate];
@@ -54,7 +54,7 @@ app.on('ready', function () {
     }  
 
     // Add event listeners
-    events.setup(mainWindow, workerWindows, constants, ipcMain);    
+    events.setup(mainWindow, constants, ipcMain);    
 });
 
 app.on('window-all-closed', function () {    
