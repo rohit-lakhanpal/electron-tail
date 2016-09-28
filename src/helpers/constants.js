@@ -12,8 +12,17 @@ export default {
         production: 'production',
         test: 'test'
     },
-    events: {        
+    events: {   
+        type: {
+            request: 'event-type-request',
+            response: 'event-type-response'
+        },   
+        status: {
+            success: 'events-status-success',
+            failure: 'events-status-failure'
+        },  
         window: {
+            openExternal: 'events-window-open-external',
             minimize: 'events-window-minimize',
             restore: 'events-window-restore',
             close: 'events-window-close',

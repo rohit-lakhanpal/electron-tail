@@ -2,9 +2,12 @@
 
 import createWindow from './window';
 import util from './util';
+import constants from './constants';
+import { shell } from 'electron';
 
 /*
     workerWindows: is an array of objects. Each object has { id:(guid), associatedFile:(name & path of the file its tailing), win:(windowObject) } 
+    arg: { type:(request|response), data: (yourData), staus(only used for response): (success, error) }
 */
 
 export default {
@@ -32,7 +35,7 @@ export default {
                     break;
                 }
             }
-            if(idx !== -1){
+            if (idx !== -1) {
                 workerWindows.splice(idx, 1);
             }
 
@@ -40,16 +43,16 @@ export default {
         };
         let addWorkerWindow = (filePath) => {
             let windowExists = false;
-            let win = getWindowByFilePath(filePath);            
+            let win = getWindowByFilePath(filePath);
             if (win == null) {
                 win = {};
                 win.id = util.generateGuid();
-                win.filePath = 
-                win.win = createWindow('main', {
-                    width: 1000,
-                    height: 600,
-                    frame: false,            
-                });
+                win.filePath =
+                    win.win = createWindow('main', {
+                        width: 1000,
+                        height: 600,
+                        frame: false,
+                    });
                 workerWindows.push(win);
             }
             return win;
@@ -68,11 +71,34 @@ export default {
         ipcMain.on(constants.events.window.minimize, () => {
             mainWindow.minimize();
         });
+
+        ipcMain.on(constants.events.window.openExternal, (event, arg) => {
+            if (arg && arg.data && util.isValidUrl(arg.data) && arg.type == constants.events.type.request) {
+                let callStatus = constants.events.status.success;
+                let data = arg.data;
+
+                try {
+                    // Open external link
+                    shell.openExternal(arg.data);
+                } catch (error) {
+                    callStatus = constants.events.status.failure;
+                    data = error;
+                }
+
+                // notify sender of call success/failure
+                event.sender.send(constants.events.window.openExternal, {
+                    type: constants.events.type.response,
+                    status: callStatus,
+                    data: data
+                });
+            }
+
+        });
         // ----- WINDOW EVENTS CHANNEL -----
 
         // ----- FILE EVENTS CHANNEL -----
         ipcMain.on(constants.events.file.open, (event, arg) => {
-            
+
 
         });
         // ----- FILE EVENTS CHANNEL -----

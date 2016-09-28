@@ -27,10 +27,12 @@
 @color1: #00897B;
 @color2: #fff;
 @color3: #80CBC4;
-@color4: #E60000;
+@color4: #E60000; // OR #ff0000
 @color5: #004D40;
 @color6: #FFA726;
 @color7: #E0F2F1;
+@color8: #000066;
+@color9: #333;
 @body_background: #455A64;
 
 html,
@@ -49,7 +51,8 @@ body {
     background-color: @color1;
     color: @color2;
     height: 34px;
-    width: 100%;    
+    width: 100%; 
+
     .nav-icons {
         -webkit-app-region: no-drag;     
         margin-left: -40px!important;  
@@ -57,13 +60,18 @@ body {
         float: left;
     }
 
-    .header-text{        
+    .header-text {        
         padding-left: 15px;
         line-height: 38px;
         vertical-align: initial;
         font-size: 1.2em;
         float: left;        
     } 
+    // .header-sub-text {
+    //     font-size: 0.8em;
+    //     color: @color8;
+    // }
+    
 
     ul{
         -webkit-app-region: no-drag; 
@@ -117,6 +125,7 @@ body {
     color: @color2;
 
     .file-selector {
+        cursor: pointer;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -131,10 +140,30 @@ body {
 
 
 .footer {
-    background-color: @color7;    
+    background-color: @color7;
+    color: @color9;    
     height: 33px;
     font-size: 1em;
     padding: 6px 0 0 3px;
+
+    a {
+        cursor: pointer;
+    }
+
+    .footer-file-info {
+        float:left;
+        margin-right: 10px;        
+    }
+
+    .footer-app-info {
+        float:right;
+        margin-right: 10px;
+    }
+    .footer-actions{
+        span {
+            cursor: pointer
+        }
+    }
 }
 
 
@@ -148,7 +177,19 @@ body {
         padding: 10px;                
     }
 }
+
 .common-negative-background-colour:hover {
     background-color: @color4 !important;
+}
+
+.fa-code, .fa-heart, .fa-code-fork{
+    font-size: 1.3em;
+    font-weight: bold;
+}
+.fa-code, .fa-code-fork{
+    color: @color8;
+}
+.fa-heart{
+    color: @color4;
 }
 

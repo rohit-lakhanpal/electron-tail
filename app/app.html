@@ -20,6 +20,7 @@
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-bootstrap/ui-bootstrap.min.js"></script>
     <script src="lib/angular-toastr/angular-toastr.min.js"></script>
+    <script src="lib/angular-toastr/angular-toastr.tpls.min.js"></script>
 
     <!-- Load site js -->
     <script src="js/app.js"></script>
@@ -37,7 +38,10 @@
             <li class="fa fa-github"></li>
         </ul>
         <span class="header-text">
-            Product Name           
+            {{data.product.name}} 
+            <!--<span class="header-sub-text">
+                <i class="fa fa-code-fork" aria-hidden="true"></i> v {{data.product.version}} 
+            </span>-->
         </span>
         <ul class="action-icons">
             <li class="fa fa-minus" aria-hidden="true" title="Minimise" ng-click="methods.minimize()"></li>
@@ -48,13 +52,13 @@
 
     <!-- (B): Sub-Header -->
     <nav class="sub-header">
-        
+
     </nav>
 
     <!-- (C): Content -->
-    <section class="content">
+    <section class="content" ng-controller="contentCtrl">
         <div class="file-selector">
-            <span class="glyphicon glyphicon-file" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-file" aria-hidden="true" ng-click="methods.selectFile()"></span>
             <br /> Select a file ...
         </div>
         <table class="file-table">
@@ -68,7 +72,39 @@
     </section>
 
     <!-- (D): Footer -->
-    <footer class="footer">
+    <footer class="footer" ng-controller="footerCtrl">
+        <div class="footer-file-info" ng-hide="rsdata.file.name == ''">
+            <span class="glyphicon glyphicon-file" aria-hidden="true">
+            </span> <span>{{rsdata.file.name}}</span> |
+            <span>
+                {{rsdata.file.lines}} {{rsdata.file.lines == 1 ? "line":"lines"}} | 
+                {{rsdata.file.sizeInKB}} KB
+            </span>
+        </div>
+        <div class="footer-app-info">
+            <div ng-show="rsdata.file.name == ''">
+                <span>
+                    <i class="fa fa-code"></i> 
+                    with 
+                    <i class="fa fa-heart"></i> 
+                    by 
+                    <a open-external="{{data.product.author.url}}" title="{{data.product.author.name}}">{{data.product.author.handle}}</a>,                
+                    sponsored by
+                    <a open-external="{{data.product.sponsor.url}}" title="{{data.product.sponsor.name}}">{{data.product.sponsor.handle}}</a>.
+                </span> |
+                <span>
+                    <i class="fa fa-code-fork" aria-hidden="true"></i>
+                    <a open-external="{{data.product.repository.url}}">v. {{data.product.version}}</a>
+                </span>
+            </div>
+            
+            <div ng-hide="rsdata.file.name == ''" class="footer-actions">
+                <span ng-click="methods.selectFile()" class="glyphicon glyphicon-file" aria-hidden="true" title="Select a file"></span>
+                <span ng-click="methods.clearOutput()" class="glyphicon glyphicon-trash" aria-hidden="true" title="Clear output"></span>
+                <span ng-click="methods.pauseTailing()" class="glyphicon glyphicon-pause" aria-hidden="true" title="Pause tailing file"></span>
+                <span ng-click="methods.continueTailing()" class="glyphicon glyphicon-play" aria-hidden="true" title="Continue tailing file"></span>
+            </div>
+        </div>
     </footer>
 </body>
 

@@ -3,6 +3,7 @@ import constants from './constants';
 import jetpack from 'fs-jetpack'; 
 
 window.et = {
+    dialog: remote.dialog,
     ipcRenderer: ipcRenderer,
     constants: constants,
     appData: {
