@@ -1,18 +1,7 @@
 // // Here is the starting point for your application code.
-// document.addEventListener('DOMContentLoaded', function () {
-//     document.getElementById('test').innerHTML = "This content has been populated by app.js"
-
-//     // document.getElementById('tail').onclick = function () {        
-//     // };
-// });
 (() => {
     var app = angular.module('electronTail', ['ui.bootstrap', 'toastr']);
-    // app.factory('ipcService', ['$window', (win)=>{
-    //     return {
-    //         ipcRenderer: win.et.ipcRenderer            
-    //     }
-    // }]);    
-    app.run(['$rootScope', ($rootScope) => {
+    app.run(['$rootScope', '$window', ($rootScope, win) => {
         $rootScope.rsdata = {
             file: {
                 name: '',
@@ -20,6 +9,14 @@
                 sizeInKB: 0
             }
         }
+        $rootScope.def = {
+            events: win.et.constants.events
+        } 
+        win.et.ipcRenderer.on(win.et.constants.events.file.newLine, (evt, data) => {
+            $rootScope.rsdata.file = data.file;     
+            $rootScope.$emit($rootScope.def.events.file.newLine, data);
+            $rootScope.$apply();       
+        })
 
         // console.log("Constants ...", constantsSvc);
     }]);
@@ -160,8 +157,12 @@
         let that = $scope;
 
         that.data = {
-
+            lines: []
         };
+
+        $rootScope.$on($rootScope.def.events.file.newLine, (evt, data) => {
+            that.data.lines.push(data.line);
+        });
 
         that.methods = {
             selectFile: () => {

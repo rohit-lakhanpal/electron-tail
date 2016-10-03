@@ -26,17 +26,32 @@ document.addEventListener('DOMContentLoaded', () => {
            name: getParameterByName('file'),
            lines: 0,
            sizeInKB: 0.0
+       },
+       tail: {
+           fromBeginning: getParameterByName('fromBeginning')
        }
    }   
 
 
-   let tl = new tail.Tail(window.et.file.name, { separator: /[\r]{0,1}\n/, fromBeginning: true });
+   let tl = new tail.Tail(window.et.file.name, { separator: /[\r]{0,1}\n/, fromBeginning: window.et.tail.fromBeginning });
    tl.on('line', (data) => {
        window.et.file.lines++;
-       if(window.et.file.lines && window.et.file.lines % 10 == 0){
+       if(window.et.file.lines && (window.et.file.lines == 0 || window.et.file.lines % 10 == 0)){
            window.et.file.sizeInKB = calcSize(window.et.file.name);
-       }
+       }       
+       document.dispatchEvent(new CustomEvent('line', { 'detail': {
+           file: window.et.file,
+           line: data
+       }}));
        console.log(`Line ${window.et.file.lines} and Size ${window.et.file.sizeInKB} KB`, data);
-   })
-   //tl.watchEvent.call(tail, "change");
+   });
+
+    document.addEventListener('line', (evt) => {
+        ipcRenderer.send(constants.events.passthrough, {
+            scope: window.et.id,
+            topic: constants.events.file.newLine,
+            payload: evt.detail
+        })
+    })
+   
 });

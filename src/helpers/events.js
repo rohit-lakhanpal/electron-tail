@@ -13,12 +13,23 @@ import { shell } from 'electron';
 
 export default {
     setup: (mainWindow, constants, ipcMain) => {
-        let workerWindows = [];
+        let workerWindows = []; // This is written to be implemented later for multiple windows
         let getWindowByFilePath = (filePath) => {
             let win = null;
             for (let i = 0; i < workerWindows.length; i++) {
                 let w = workerWindows[i];
                 if (w.associatedFile === filePath) {
+                    win = w;
+                    break;
+                }
+            }
+            return win;
+        };
+        let getWindowById = (id) => {
+            let win = null;
+            for (let i = 0; i < workerWindows.length; i++) {
+                let w = workerWindows[i];
+                if (w.id === id) {
                     win = w;
                     break;
                 }
@@ -55,7 +66,7 @@ export default {
                     frame: env.name === 'development',
                     show: env.name === 'development'
                 });
-                win.win.loadURL('file://' + __dirname + '/tail.html?&file=' + escape(win.filePath) + '&id=' + win.id);
+                win.win.loadURL('file://' + __dirname + '/tail.html?&file=' + escape(win.filePath) + '&id=' + win.id + '&fromBeginning=true');
                 if (env.name === 'development') {
                     win.win.openDevTools();
                 }
@@ -130,10 +141,15 @@ export default {
                 event.sender.send(constants.events.passthrough, arg);
 
                 if (arg.scope === '*') { // Then send to all windows
-
-                } else {
-
-                }
+                    for(let idx = 0; idx < workerWindows.length; idx++){
+                        workerWindows[idx].win.webContents.send(arg.topic, arg.payload);
+                    }
+                } else {                    
+                    if(getWindowById(arg.scope)){
+                        getWindowById(arg.scope).win.webContents.send(arg.topic, arg.payload);
+                    }
+                }                
+                mainWindow.webContents.send(arg.topic, arg.payload);
             }
         });
         // ----- PASSTHROUGH EVENTS CHANNEL -----

@@ -57,18 +57,24 @@
 
     <!-- (C): Content -->
     <section class="content" ng-controller="contentCtrl">
-        <div class="file-selector">
+        <div class="file-selector" ng-show="rsdata.file.name == ''">
             <span class="glyphicon glyphicon-file" aria-hidden="true" ng-click="methods.selectFile()"></span>
             <br /> Select a file ...
         </div>
-        <table class="file-table">
+        <div class="file-content">
+            <div class="file-line" ng-repeat="line in data.lines track by $index">
+                <span class="line-number">{{$index}}</span>
+                <span class="line-content">{{line}}</span>
+            </div>
+        </div>
+        <!--<table class="file-table">
             <tbody>
-                <tr>
-                    <td class="file-line-number"></td>
-                    <td class="file-line-content" id="anchor{{$index}}"></td>
+                <tr ng-repeat="line in data.lines">
+                    <td class="file-line-number">{{($index + 1)}}.</td>
+                    <td class="file-line-content" id="anchor{{$index}}">{{line}}</td>
                 </tr>
             </tbody>
-        </table>
+        </table>-->
     </section>
 
     <!-- (D): Footer -->
