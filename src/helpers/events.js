@@ -3,6 +3,7 @@
 import createWindow from './window';
 import util from './util';
 import constants from './constants';
+import env from '../env';
 import { shell } from 'electron';
 
 /*
@@ -47,12 +48,18 @@ export default {
             if (win == null) {
                 win = {};
                 win.id = util.generateGuid();
-                win.filePath =
-                    win.win = createWindow('main', {
-                        width: 1000,
-                        height: 600,
-                        frame: false,
-                    });
+                win.filePath = filePath;
+                win.win = createWindow('main', {
+                    width: 1000,
+                    height: 600,
+                    frame: env.name === 'development',
+                    show: env.name === 'development'
+                });
+                win.win.loadURL('file://' + __dirname + '/tail.html?&file=' + escape(win.filePath) + '&id=' + win.id);
+                if (env.name === 'development') {
+                    win.win.openDevTools();
+                }
+
                 workerWindows.push(win);
             }
             return win;
@@ -98,8 +105,20 @@ export default {
 
         // ----- FILE EVENTS CHANNEL -----
         ipcMain.on(constants.events.file.open, (event, arg) => {
+            if (arg && arg.data && arg.type == constants.events.type.request) {
+                let callStatus = constants.events.status.success;
+                let data = arg.data;
 
+                // Open a new window & give it handler info to communicate!
+                let w = addWorkerWindow(arg.data);
 
+                // notify sender of call success/failure
+                event.sender.send(constants.events.file.open, {
+                    type: constants.events.type.response,
+                    status: callStatus,
+                    data: w.id
+                });
+            }
         });
         // ----- FILE EVENTS CHANNEL -----
 

@@ -12,6 +12,19 @@
     //         ipcRenderer: win.et.ipcRenderer            
     //     }
     // }]);    
+    app.run(['$rootScope', ($rootScope) => {
+        $rootScope.rsdata = {
+            file: {
+                name: '',
+                lines: 0,
+                sizeInKB: 0
+            }
+        }
+
+        // console.log("Constants ...", constantsSvc);
+    }]);
+
+
     app.factory('constantsSvc', ['$window', (win) => {
         return win.et.constants
     }]);
@@ -64,6 +77,29 @@
         }
     }]);
 
+    app.factory('tailSvc', ['$window', ($window) => {
+        let constants = $window.et.constants;
+        let _open = (filePath) => {
+            $window.et.ipcRenderer.send(constants.events.file.open, {
+                type: constants.events.type.request,
+                data: filePath
+            });
+            $window.et.ipcRenderer.once(constants.events.file.open, (event, arg) => {
+                if (arg && arg.data && arg.type == constants.events.type.response) {
+                    if(arg.status == constants.events.status.success){
+
+                    } else {
+                        throw "Unable to open the file to tail.";
+                    }
+                }
+            })
+        };
+
+        return {
+            open: _open
+        }
+    }])
+
     app.directive('openExternal', ['toastr', 'windowManagementSvc', 'constantsSvc', function (toastr, windowManagementSvc, constantsSvc) {
         return {
             restrict: 'A', //E = element, A = attribute, C = class, M = comment         
@@ -85,16 +121,7 @@
         }
     }]);
 
-    app.run(['$rootScope', ($rootScope) => {
-        $rootScope.rsdata = {
-            file: {
-                name: '',
-                lines: 0,
-                sizeInKB: 0
-            }
-        }
-    }]);
-
+    
     app.controller('navCtrl', ['$scope', 'windowManagementSvc', 'appInfoSvc', ($scope, windowManagementSvc, appInfoSvc) => {
         let that = $scope;
         //let that = this;
@@ -129,7 +156,7 @@
         };
     }]);
 
-    app.controller('contentCtrl', ['$scope', '$rootScope', 'dialogSvc', 'logSvc', ($scope, $rootScope, dialogSvc, logSvc) => {
+    app.controller('contentCtrl', ['$scope', '$rootScope', 'dialogSvc', 'logSvc', 'tailSvc', ($scope, $rootScope, dialogSvc, logSvc, tailSvc) => {
         let that = $scope;
 
         that.data = {
@@ -146,6 +173,8 @@
                         lines: 0,
                         sizeInKB: 0.0
                     }
+
+                    tailSvc.open($rootScope.rsdata.file.name);
                 }
             }
         };

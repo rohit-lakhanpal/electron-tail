@@ -14,6 +14,7 @@ import events from './helpers/events';
 // in config/env_xxx.json file.
 import env from './env';
 
+
 var mainWindow;
 // // workerWindows: is an array of objects. Each object has { id:(guid), associatedFile:(name & path of the file its tailing), win:(windowObject) } 
 // var workerWindows = [];

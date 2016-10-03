@@ -2,7 +2,7 @@
   "name": "electron-tail",
   "productName": "Electron-Tail",
   "description": "Application to display the tail end of a text file.",
-  "version": "2.0.0",
+  "version": "1.0.0",
   "author": "Apps by @roeburg",
   "authorDetails": {
     "name": "Rohit Lakhanpal",

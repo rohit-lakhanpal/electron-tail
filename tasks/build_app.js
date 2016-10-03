@@ -22,7 +22,8 @@ gulp.task('bundle', function () {
         // bundle(srcDir.path('app.js'), destDir.path('app.js')),
 
         // Preload is used in the renderer process & hence needs bundling 
-        bundle(srcDir.path('helpers/preload.js'), destDir.path('js/preload.js')),    
+        bundle(srcDir.path('helpers/preload.js'), destDir.path('js/preload.js')),   
+        bundle(srcDir.path('tail.js'), destDir.path('js/tail.js')),    
     ]);
 });
 
